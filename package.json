@@ -1,7 +1,7 @@
 {
-  "name": "battleship",
-  "version": "1.1.0",
-  "description": "Progetto Tecnologie e Applicazioni Web - 2018",
+  "name": "it.unive.battleship",
+  "version": "1.2.0",
+  "description": "Web technologies and applications project",
   "main": "server.js",
   "scripts": {
     "install": "npm run install-server && npm run install-web && npm run install-desktop && npm run install-android",
@@ -19,5 +19,9 @@
     "generate-desktop": "cd client/desktop && npm run generate && cd -"
   },
   "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/westfox-5/BattleShip"
+  }
 }

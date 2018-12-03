@@ -57,8 +57,8 @@ Choose what to execute
         npm run generate-android :: generate an APK file in `releases/android` folder.
 
 
-## [Server documentation][s]
-## [Client documentation][c]
+[//]: # (## [Server documentation][s])
+[//]: # (## [Client documentation][c])
   
 
 

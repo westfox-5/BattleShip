@@ -1,7 +1,8 @@
 {
-  "name": "battleship-desktop",
-  "version": "1.0.0",
+  "name": "it.unive.battleship.desktop",
+  "version": "1.2.0",
   "description": "Desktop version of BattleShip",
+  "displayName": "BattleShip Desktop",
   "private": true,
   "main": "electron.js",
   "scripts": {
@@ -11,6 +12,10 @@
   },
   "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
   "license": "ISC",
+  "dependencies": {
+    "electron": "^3.0.9",
+    "electron-builder": "^20.36.2"
+  },
   "devDependencies": {
     "electron": "^3.0.9",
     "electron-builder": "^20.36.2"
@@ -42,5 +47,9 @@
       "target": "portable",
       "icon": "./dist/assets/icns/ico/256x256.ico"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/westfox-5/BattleShip"
   }
 }

@@ -1,8 +1,9 @@
 {
-    "name": "it.unive.battleship",
-    "displayName": "BattleShip",
-    "version": "1.0.0",
+    "name": "it.unive.battleship.mobile",
+    "displayName": "BattleShip Mobile",
+    "version": "1.2.0",
     "description": "Mobile version of BattleShip",
+    "private": true,
     "scripts": {
         "build": "cd ../angular && ng build --prod --output-path ../mobile/www && cd -",
         "generate": "cordova build android && mv ./platforms/android/app/build/outputs/apk/debug/app-debug.apk ../../releases/android/battleship.apk"
@@ -23,5 +24,9 @@
     },
     "devDependencies": {
         "cordova": "^8.1.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/westfox-5/BattleShip"
     }
 }

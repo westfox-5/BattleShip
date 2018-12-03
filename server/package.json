@@ -1,7 +1,9 @@
 {
-  "name": "battleship_server",
-  "version": "1.0.0",
+  "name": "it.unive.battleship.server",
+  "version": "1.2.0",
+  "displayName": "BattleShip Server",
   "description": "Server for BattleShip project",
+  "private": true,
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -23,5 +25,9 @@
     "passport-http": "^0.3.0",
     "socket.io": "^2.1.1",
     "dotenv": "5.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/westfox-5/BattleShip"
+}
 }

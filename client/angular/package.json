@@ -1,7 +1,8 @@
 {
-  "name": "battle-ship",
-  "version": "0.0.0",
-  "description": "Web Application for BattleShip project",
+  "name": "it.unive.battleship.webapp",
+  "version": "1.2.0",
+  "displayName": "BattleShip Web Application",
+  "description": "Web Application of Battleship",
   "build": {
     "directories": {
       "output": "dist/"
@@ -55,5 +56,9 @@
     "typescript": "~2.9.2"
   },
   "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/westfox-5/BattleShip"
+  }
 }
