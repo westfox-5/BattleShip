@@ -1,0 +1,291 @@
+h1 {
+  margin: 20px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.scoreboard {
+  margin: 0 auto;
+  margin-top: 20px;
+  height: 100%;
+}
+
+.games {
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.chat {
+  margin: 0 auto;
+  margin-top: 20px;
+  height: 100%;
+}
+
+
+/* ANIMATION RADAR */
+/*///////////////////////////////////////////////////////////////////////////////////////*/
+
+.display__content {
+  width: 100%;
+  max-width: 40em;
+  padding: 1em;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.display__content h1,
+.display__content h2 {
+  margin: 2em 0;
+  font-weight: lighter;
+  font-size: 1.25rem;
+}
+
+.radar {
+  width: 16rem;
+  height: 16rem;
+  background-color: #363b47;
+  overflow: hidden;
+  position: relative;
+  border-radius: 100%;
+  box-shadow: 0 0 30px rgba(54, 59, 71, 0.45);
+}
+
+.radar:before,
+.radar:after {
+  content: "";
+  position: absolute;
+  border-radius: 100%;
+  box-shadow: 0 0 30px rgba(54, 59, 71, 0.16);
+  opacity: 1;
+  transition: 1s;
+}
+
+.radar:before {
+  left: 10%;
+  top: 10%;
+  width: 80%;
+  height: 80%;
+  background-color: #4b505c;
+  animation: scan-scale ease 1.5s infinite 100ms forwards;
+}
+
+.radar:after {
+  width: 50%;
+  height: 50%;
+  left: 25%;
+  top: 25%;
+  background-color: #656d80;
+  animation: scan-scale ease 1.5s infinite 100ms forwards;
+  z-index: 0;
+}
+
+.radar__ufos {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+}
+
+.radar__ufos:after,
+.radar__ufos:before {
+  content: "";
+  position: absolute;
+  width: 3%;
+  height: 3%;
+  background-color: #ebf6eb;
+  mix-blend-mode: color-dodge;
+  border-radius: 100%;
+  box-shadow: 0 0 10px rgba(159, 167, 185, 0.9);
+}
+
+.radar__ufos:after {
+  top: 25%;
+  left: 25%;
+}
+
+.radar__ufos:before {
+  right: 35%;
+  bottom: 45%;
+  animation: scan-scale ease 3s infinite 100ms forwards;
+  transition: 1.5s;
+}
+
+.radar__inner {
+  border: transparent;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  position: relative;
+}
+
+.radar__inner__scan {
+  position: absolute;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background: conic-gradient(from 90deg, rgba(169, 184, 221, 0.1) 60%, #96a4c4);
+  transform-origin: center;
+  animation: scan-radar linear 3s infinite forwards;
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: 1.5s;
+}
+
+@keyframes scan-radar {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes scan-scale {
+  from {
+    transform: scale3d(0.7, 0.7, 0.7);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale3d(1.1, 1.1, 1.1);
+    opacity: 0;
+  }
+}
+
+/* ANIMATION WAIT BAR */
+/*///////////////////////////////////////////////////////////////////////////////////////*/
+#loadFacebookG {
+  margin: auto;
+  margin: 20px;
+
+  width: 86px;
+  height: 86px;
+  display: block;
+  position: relative;
+}
+
+.facebook_blockG {
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(255, 255, 255);
+  float: left;
+  height: 61px;
+  margin-left: 5px;
+  width: 16px;
+  opacity: 0.1;
+  animation-name: bounceG;
+  -o-animation-name: bounceG;
+  -ms-animation-name: bounceG;
+  -webkit-animation-name: bounceG;
+  -moz-animation-name: bounceG;
+  animation-duration: 1.69s;
+  -o-animation-duration: 1.69s;
+  -ms-animation-duration: 1.69s;
+  -webkit-animation-duration: 1.69s;
+  -moz-animation-duration: 1.69s;
+  animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-direction: normal;
+  -o-animation-direction: normal;
+  -ms-animation-direction: normal;
+  -webkit-animation-direction: normal;
+  -moz-animation-direction: normal;
+  transform: scale(0.7);
+  -o-transform: scale(0.7);
+  -ms-transform: scale(0.7);
+  -webkit-transform: scale(0.7);
+  -moz-transform: scale(0.7);
+}
+
+#blockG_1 {
+  animation-delay: 0.51s;
+  -o-animation-delay: 0.51s;
+  -ms-animation-delay: 0.51s;
+  -webkit-animation-delay: 0.51s;
+  -moz-animation-delay: 0.51s;
+}
+
+#blockG_2 {
+  animation-delay: 0.68s;
+  -o-animation-delay: 0.68s;
+  -ms-animation-delay: 0.68s;
+  -webkit-animation-delay: 0.68s;
+  -moz-animation-delay: 0.68s;
+}
+
+#blockG_3 {
+  animation-delay: 0.85s;
+  -o-animation-delay: 0.85s;
+  -ms-animation-delay: 0.85s;
+  -webkit-animation-delay: 0.85s;
+  -moz-animation-delay: 0.85s;
+}
+
+
+
+@keyframes bounceG {
+  0% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
+
+@-o-keyframes bounceG {
+  0% {
+    -o-transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    -o-transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
+
+@-ms-keyframes bounceG {
+  0% {
+    -ms-transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    -ms-transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
+
+@-webkit-keyframes bounceG {
+  0% {
+    -webkit-transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    -webkit-transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
+
+@-moz-keyframes bounceG {
+  0% {
+    -moz-transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    -moz-transform: scale(0.7);
+    opacity: 0.1;
+  }
+}

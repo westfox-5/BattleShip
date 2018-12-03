@@ -1,0 +1,33 @@
+.center {
+  text-align: center
+}
+
+.stat-title {
+  font-size: 18pt;
+}
+
+.stat-value {
+  font-style: italic;
+  font-size: 15pt;
+}
+
+.active {
+  background-color: #17A2B8;
+}
+
+canvas {
+  width: 100% !important;
+  max-height: 70% !important;
+
+}
+
+@media only screen and (max-device-width: 480px) {
+  .stat-title {
+    font-size: 13pt;
+  }
+  
+  .stat-value {
+    font-style: italic;
+    font-size: 11pt;
+  }
+}

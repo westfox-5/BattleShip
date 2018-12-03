@@ -1,0 +1,60 @@
+<div class="container-fluid">
+
+  <h2 style="text-align: center">Classifica</h2>
+
+  <div class="main">
+
+    <ul class="nav nav-pills nav-fill">
+      <li class="nav-item">
+        <button class="btn btn-outline-light" (click)="change(0)" [ngClass]="{'active': index===0}">Vittorie totali</button>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-outline-light" (click)="change(1)" [ngClass]="{'active': index===1}">Vittorie /
+          Sconfitte</button>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-outline-light" (click)="change(2)" [ngClass]="{'active': index===2}">Vittorie / Totali</button>
+      </li>
+    </ul>
+
+    <hr style="background-color:white" />
+
+    <div>
+      <li *ngFor="let item of scoreboards[index]; let i=index;">
+
+        <div class="row-fluid">
+          <div class="col my-row">
+
+
+            <!-- <div class="row">
+              <div class="col position"> {{ i+1 }}.</div>
+              <div class="col nickname" [ngClass]="{'first': i===0}">
+                  {{item.nickname}}</div>
+            </div> -->
+
+            <div class="d-inline">
+              {{i+1}}.
+              <div class="d-inline hypen" [ngClass]="{'first': i===0}">
+                {{item.nickname}}
+              </div>
+            </div>
+
+            
+          <div class="d-inline score-num">
+              {{ index===0? item.win 
+                : index===1 ? item.lose!==0 ? (item.win/item.lose).toFixed(2) : item.win.toFixed(2)
+                : (item.win+item.lose)!==0 ? (item.win/(item.win+item.lose)).toFixed(2) : '0.00'
+              }}
+            </div>
+
+          </div>
+
+        </div>
+        <hr style="background-color:white" />
+
+
+      </li>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,27 @@
+{
+    "name": "it.unive.battleship",
+    "displayName": "BattleShip",
+    "version": "1.0.0",
+    "description": "Mobile version of BattleShip",
+    "scripts": {
+        "build": "cd ../angular && ng build --prod --output-path ../mobile/www && cd -",
+        "generate": "cordova build android && mv ./platforms/android/app/build/outputs/apk/debug/app-debug.apk ../../releases/android/battleship.apk"
+    },
+    "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "cordova-android": "^7.1.4",
+        "cordova-plugin-whitelist": "^1.3.3"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {}
+        },
+        "platforms": [
+            "android"
+        ]
+    },
+    "devDependencies": {
+        "cordova": "^8.1.2"
+    }
+}

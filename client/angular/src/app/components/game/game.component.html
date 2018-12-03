@@ -1,0 +1,349 @@
+<nav class="navbar navbar-light navbar-fixed-top">
+  <div class="container-fluid">
+
+    <div class="row justify-content-between" style="width:100%">
+      <div class="col-6 col-md-4">
+        <!-- Sinistra -->
+
+        <div class="navbar-brand title">
+          <img src="assets/icons/win/256x256.ico" width="30" height="30" class="d-inline-block align-top" alt="">
+          <a class="" style="font-size: 100%; text-decoration: none; color: white">
+            BattleShip </a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4" style="text-align: center">
+        <!-- Centrale -->
+        <button class="btn btn-danger" (click)="removeMatch()">ARRENDITI</button>
+      </div>
+
+      <div class="col-36 col-md-4">
+        <!-- Destra -->
+        <h2 class="hypen">Partita contro {{nickname}}</h2>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+
+<div class="container-fluid">
+
+  <!-- IN PREPARAZIONE -->
+  <ng-container *ngIf="preparazione; else gioco">
+    <div class="container-fluid">
+      <p>Per aggiungere una nave, clicca sulla cella in cui vuoi inserirla.<br>
+        Per rimuovere una nave fai click su di essa.
+      </p>
+
+      <div *ngIf="noBoatsLeft()" style="text-align:center; padding: 8pt">
+        <h1>Hai inserito tutte le navi!<br>Ora puoi giocare!</h1>
+
+        <button class="btn btn-success" (click)="startMatch()">GIOCA</button>
+      </div>
+      <div class="row-fluid">
+
+        <div class="col" [ngClass]="{'span12': noBoatsLeft(), 'span6': !noBoatsLeft()}">
+
+          <h1 class="titleBoards">Il mio campo</h1>
+          <table id="preparation" class="board table table-bordered">
+            <tr *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
+              <td *ngFor="let cell of myBoard[i]; let j=index">
+                <ng-container *ngIf="cell.valid === 0 && cell.type === 'sea'; else notsea">
+                  <div class="cella click mare" data-toggle="modal" data-target="#placeShipModal" (click)="loadModal(i,j,false);">
+                  </div>
+                </ng-container>
+                <ng-template #notsea>
+                  <ng-container *ngIf="cell.type === 'boat'; else invalid ">
+                    <div class="cella click barca" data-toggle="modal" data-target="#removeShipModal" (click)="loadModal(i,j,true)">
+                    </div>
+                  </ng-container>
+                  <ng-template #invalid>
+                    <div class="cella invalida"></div>
+                  </ng-template>
+                </ng-template>
+
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div [hidden]="noBoatsLeft()" class="col span6" style="text-align: center">
+          <!-- BOAT CONTAINER -->
+
+          <h1 style="text-align: center;"> Navi disponibili</h1>
+
+          <div *ngFor="let b of boats;" [ngClass]="{'empty': b.num===0 }">
+
+            <div class="row-fluid" style="margin-top: 30px;">
+              <!-- row -->
+
+              <div class="col span6">
+                {{b.name}}
+                <b> {{b.num}}x </b> <br> Lunghezza: {{b.len}}
+              </div>
+
+              <img class="col span6" [src]="b.src">
+
+            </div> <!-- /row -->
+          </div> <!-- /for -->
+
+
+        </div> <!-- /boat container -->
+
+      </div>
+    </div>
+
+
+    <!-- Modal INSERT -->
+    <div class="modal fade" id="placeShipModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="titolo-insert"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="row-fluid">
+
+              <div class="col span6">
+                <!-- ORIZZONTALI -->
+
+                <h2 class="modal-orientamento">ORIZZONTALI</h2>
+                <p class="modal-empty" *ngIf="prepBoatsO.length === 0"> Nessuna barca da poter piazzare </p>
+                <div id="testo" *ngFor="let b of prepBoatsO;" [ngClass]="{'empty': b.num===0 }">
+                  <button class="btn btn-outline-dark" id="save" (click)="placeBoat(b)" data-dismiss="modal">
+                    <strong>{{b.name}}</strong> <br> Disponibili: {{b.num}}x <br>
+                    <img [src]="b.src" style="width: 100%">
+
+                    <p> lunghezza: <u> 1x{{b.len}} </u> </p>
+                  </button>
+                </div>
+
+              </div> <!-- /orizzontali -->
+
+              <hr />
+
+              <div class="col span6">
+                <!-- VERTICALI -->
+                <h2 class="modal-orientamento">VERTICALI</h2>
+                <p class="modal-empty" *ngIf="prepBoatsV.length === 0"> Nessuna barca da poter piazzare </p>
+
+                <div id="testo" *ngFor="let b of prepBoatsV;" [ngClass]="{'empty': b.num===0 }">
+                  <button class="btn btn-outline-dark" id="save" (click)="placeBoat(b)" data-dismiss="modal">
+                    <strong>{{b.name}}</strong> <br> Disponibili: {{b.num}}x <br>
+                    <img style="width: 100%" [src]="b.src">
+
+
+                    <p>lunghezza: <u> {{b.len}}x1 </u> </p>
+
+                  </button>
+                </div>
+
+              </div> <!-- /verticali -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal REMOVE -->
+    <div class="modal fade" id="removeShipModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header alert-danger">
+            <h5 class="modal-title" id="titolo-remove"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex justify-content-around">
+              <button type="button" class="btn btn-danger" (click)="removeBoat()" data-dismiss="modal">Rimuovi</button>
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal ARRESO -->
+    <button [hidden]="true" id="openArresoModal" data-toggle="modal" data-target="#arresoModal" data-backdrop="static"
+      data-keyboard="false"></button>
+    <div class="modal fade" id="arresoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="color: black">
+          <div class="modal-body">
+            <div class="d-flex justify-content-around hypen">
+              {{nickname}} si è arreso!<br>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="backHome()">Torna alla Home!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </ng-container>
+
+  <ng-template #gioco>
+
+    <ng-container *ngIf="attesa; else verogioco">
+      <div class="display__content" style="font-size: 150%">
+        <h3>Attendi che l'altro giocatore termini il piazzamento delle barche!</h3>
+
+
+        <div id="loadFacebookG">
+          <div id="blockG_1" class="facebook_blockG"></div>
+          <div id="blockG_2" class="facebook_blockG"></div>
+          <div id="blockG_3" class="facebook_blockG"></div>
+        </div>
+        <br><br><br>
+
+        <p class="text-danger blinker text-uppercase">Non ricaricare o lasciare questa pagina!</p>
+
+      </div>
+
+    </ng-container>
+
+    <ng-template #verogioco>
+
+      <div class="row-fluid mt-3 mb-3">
+        <div class="col span6" style="text-align: center; align-items: center;">
+          <div class="btn-circle btn-lg" [ngClass]="{'btn-success': turno, 'btn-danger': !turno}" style="width: 300px; text-align: center">
+            Turno </div>
+        </div>
+        <div class="col span6" style="text-align: center; align-items: center;">
+          Barche avversarie rimanenti: {{ daAffondare }}
+        </div>
+      </div>
+
+      <div class="container" *ngIf="enemyBoard">
+        <div class="boardContainer text-center">
+
+          <h1 class="visible-phone">Campo avversario</h1>
+          <table id="my-guesses" class="board table table-bordered">
+            <tr *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];">
+              <td *ngFor="let cell of enemyBoard[i]; let j=index;">
+
+                <ng-container *ngIf="!cell.colpita; else colpitaTemplate">
+                  <div class="cella" (click)="shoot(i,j)" [ngClass]="{'click': turno}">
+                  </div>
+
+                </ng-container>
+                <ng-template #colpitaTemplate>
+                  <div class="cella invalida" [ngClass]="
+                { 
+                  'mare': cell.type==='sea',
+                  'barca-affondata': cell.affondata && cell.type === 'boat',
+                  'barca-colpita': cell.type === 'boat'
+                }"></div>
+                </ng-template>
+
+              </td>
+            </tr>
+          </table>
+
+          <br>
+
+          <h1 class="visible-phone">Il mio campo</h1>
+          <table id="my-board" class="board table table-bordered">
+            <tr *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
+              <td *ngFor="let cell of myBoard[i]">
+                <div class="cella mare" [ngClass]="
+                {
+                  'invalida': cell.colpita && cell.type === 'sea',
+                  'barca': !cell.colpita && cell.type === 'boat',
+                  'barca-colpita': cell.colpita && cell.type === 'boat',
+                  'barca-affondata': cell.affondata && cell.type === 'boat'
+                }"></div>
+              </td>
+            </tr>
+          </table>
+
+        </div>
+
+
+      </div>
+
+      <!-- Modal WIN  -->
+      <button [hidden]="true" id="openWinModal" data-toggle="modal" data-target="#winModal" data-backdrop="static"
+        data-keyboard="false"></button>
+      <div class="modal fade" tabindex="-1" id="winModal" role="dialog" aria-labelledby="exampleModalCenterTitle">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content alert alert-succcess" role="alert" style="color: black">
+            <div class="modal-body">
+              <div class="d-flex justify-content-around">
+                <h1>Hai vinto!</h1>
+              </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="backHome()">Torna alla
+                Home!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal ENEMY WIN -->
+      <button [hidden]="true" id="openEnemyWinModal" data-toggle="modal" data-target="#enemyWinModal" data-backdrop="static"
+        data-keyboard="false"></button>
+      <div class="modal fade" tabindex="-1" id="enemyWinModal" role="dialog" aria-labelledby="exampleModalCenterTitle">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content alert alert-danger" role="alert" style="color: black">
+            <div class="modal-body">
+              <div class="d-flex justify-content-around">
+                <h1>{{nickname}} ha vinto!</h1>
+              </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="backHome()">Torna alla
+                Home!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal ARRESO -->
+      <button [hidden]="true" id="openArresoModalGame" data-toggle="modal" data-target="#arresoModalGame" data-backdrop="static"
+        data-keyboard="false"></button>
+      <div class="modal fade" tabindex="-1" id="arresoModalGame" role="dialog" aria-labelledby="exampleModalCenterTitle">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content" style="color: black">
+            <div class="modal-body">
+              <div class="d-flex justify-content-around">
+                {{nickname}} si è arreso!<br>
+                Hai vinto
+              </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="backHome()">Torna alla
+                Home!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ng-template>
+
+  </ng-template>
+
+</div>
+
+
+<div class="container-fluid">
+  <app-chat></app-chat>
+</div>

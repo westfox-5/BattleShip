@@ -1,0 +1,169 @@
+<nav class="navbar navbar-light navbar-expand-xl navbar-fixed-top">
+  <div class="container-fluid">
+
+    <div class="row" style="width:100%">
+      <div class="col col-md-4">
+        <!-- Sinistra -->
+
+        <div class="navbar-brand title" routerLink="/home" routerLinkActive="active">
+          <img src="assets/icons/win/256x256.ico" width="30" height="30" class="d-inline-block align-top" alt="">
+          <a style="text-decoration: none; color: white">
+            BattleShip </a>
+        </div>
+      </div>
+
+      <div class="col" style="text-align: center">
+        <!-- Centrale -->
+        <h2>Gestione utenti</h2>
+      </div>
+
+      <div class="col" style="text-align: right;">
+        <!-- Destra -->
+
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="true">
+          {{ nickname }}
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" routerLink="/profile" routerLinkActive="active">Profilo</a>
+          <a *ngIf="isAdmin" class="dropdown-item" routerLink="/admin" routerLinkActive="active">Pannello
+            Admin</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" (click)="logout()">Logout</a>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+
+
+<div class="container mt-5">
+  <div id="users_list" class="main">
+
+    <ng-container *ngIf="loaded && usersToShow.length===0; else elseTemplate">
+      <h2 style="text-align: center"> Nessun utente </h2>
+    </ng-container>
+    <ng-template #elseTemplate>
+
+
+
+      <li *ngFor="let user of usersToShow">
+        <div class="row">
+          <div class="col span8 ml-4">
+            <h2 class="d-inline hypen"> <b><i> {{ user.nickname }} </i></b></h2>
+
+            <br>
+            <h4 class="d-inline">
+              Stato:
+            </h4>
+
+            <h5 class="d-inline" [ngStyle]="{'color': user.isOnline?'green':'red'}">
+              {{ user.isOnline?'online':'offline' }}
+            </h5>
+            <h5 class="d-inline">
+              {{ user.isInRoom?'in attesa' : user.isInGame?'in gioco': ''}}
+            </h5>
+
+            <div>
+              <p class="d-inline" [ngStyle]="{'color': user.ratio === -1 ? 'white' : user.ratio > 1 ? 'red' : 'green' }">W/L
+                : {{ user.ratio
+                === -1 ? 'Mai perso!' : user.ratio.toFixed(3) }} </p>
+              <p class="user-info d-inline ml-3"> Partite vinte: {{ user.win }} - Partite perse: {{ user.lose }}</p>
+            </div>
+          </div>
+
+
+          <div class="col span4">
+            <div class="float-right">
+              <button class=" btn btn-info" (click)="openAdminModal(user)" [hidden]="user.isAdmin">
+                Rendi Admin</button>
+              <button class=" btn btn-danger ml-1" (click)="openDeleteModal(user)" [hidden]="user.isAdmin || user._id === _us.getId()">
+                Elimina</button>
+            </div>
+          </div>
+        </div>
+        <hr style="background-color:white" />
+      </li>
+
+      <div class="row-fluid" *ngIf="usersToShow.length !== 0" style="margin-top: 20px;">
+        <div class="col span3">
+          <button class="btn btn-outline-light" *ngIf="currentPage !== 0" style="width: 100%; text-align: center"
+            (click)="pagination(-1)">
+            &lt;&lt;
+          </button>
+        </div>
+
+        <div class="class span6">
+          <p class="text-muted" *ngIf="lastpg !== -1" style="text-align:center;">Pagina {{currentPage + 1}} di {{lastpg
+            +
+            1}}</p>
+        </div>
+
+        <div class="col span3">
+          <button class="btn btn-outline-light" *ngIf="lastpg !== -1 && currentPage !== lastpg" style="width: 100%; text-align: center"
+            (click)="pagination(1)">
+            &gt;&gt;
+          </button>
+        </div>
+      </div>
+    </ng-template>
+    
+  </div>
+
+</div>
+
+
+<!-- Modal REMOVE -->
+
+<button [hidden]="true" id="openDeleteModal" data-toggle="modal" data-target="#removeUser" data-backdrop="static"
+  data-keyboard="false"></button>
+
+<div class="modal fade" id="removeUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-danger">
+        <h5 class="modal-title"> Sei sicuro di voler eliminare {{userToRemove.nickname}}? </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <textarea style="width: 100%; height: 300px;" #reason placeholder="Inserisci il motivo della rimozione..."></textarea>
+
+        <div class="d-flex justify-content-around">
+          <button type="button" class="btn btn-danger" (click)="deleteUser(reason.value)" data-dismiss="modal">Conferma</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal EVOLVE IN ADMIN-->
+
+<button [hidden]="true" id="openAdminModal" data-toggle="modal" data-target="#evolveUser" data-backdrop="static"
+  data-keyboard="false"></button>
+
+<div class="modal fade" id="evolveUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> Sei sicuro di voler rendere admin {{userToEvolve.nickname}}? </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-around">
+          <button type="button" class="btn btn-success" (click)="evolveInAdmin()" data-dismiss="modal">Conferma</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

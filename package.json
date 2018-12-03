@@ -1,0 +1,23 @@
+{
+  "name": "battleship",
+  "version": "1.1.0",
+  "description": "Progetto Tecnologie e Applicazioni Web - 2018",
+  "main": "server.js",
+  "scripts": {
+    "install": "npm run install-server && npm run install-web && npm run install-desktop && npm run install-android",
+    "install-server": "cd server && npm install && cd -",
+    "install-web": "cd client/angular && npm install && cd -",
+    "install-desktop": "cd client/desktop && npm install && cd -",
+    "install-android": "cd client/desktop && npm install && cd -",
+    "build-desktop": "cd client/desktop && npm run build && cd -",
+    "build-android": "cd client/mobile && npm run build && cd -",
+    "start-db": "cd server && npm run start-db",
+    "start-server": "cd server && npm start && cd -",
+    "start-web": "cd client/angular && ng serve --host 0.0.0.0 --open",
+    "start-desktop": "cd client/desktop && npm run start",
+    "generate-android": "cd client/mobile && npm run generate && cd -",
+    "generate-desktop": "cd client/desktop && npm run generate && cd -"
+  },
+  "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
+  "license": "ISC"
+}

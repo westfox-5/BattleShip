@@ -1,0 +1,28 @@
+{
+  "name": "battleship_server",
+  "version": "1.0.0",
+  "description": "Server for BattleShip project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start-db": "mkdir -p ./data && mongod --dbpath ./data"
+  },
+  "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "colors": "^1.3.2",
+    "cors": "^2.8.4",
+    "crypto": "^1.0.1",
+    "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.3.0",
+    "jwt-decode": "^2.2.0",
+    "mongoose": "^5.2.18",
+    "nodemon": "^1.18.4",
+    "passport": "^0.4.0",
+    "passport-http": "^0.3.0",
+    "socket.io": "^2.1.1",
+    "dotenv": "5.0.1"
+  }
+}

@@ -1,0 +1,44 @@
+<div class="container-fluid login-reg-container">
+  <h4 style="color:white; text-align: center">Crea nuovo account</h4>
+
+  <form name="form" (ngSubmit)="f.form.valid && onRegister(f)" #f="ngForm" novalidate appConfirmPassword>
+
+    <!-- Nickname input and errors -->  
+    <div class="form-group">
+      <label for="nickname">Nickname</label>
+      <input type="text" class="form-control" name="nickname" autocomplete="off" [(ngModel)]="model.nickname" #nickname="ngModel"
+        [ngClass]="{ 'is-invalid': f.submitted && nickname.invalid }" required />
+      <div *ngIf="nickname.invalid" class="invalid-feedback">
+        <div *ngIf="nickname.errors.required">Nickname è richiesto</div>
+      </div>
+    </div>
+
+    <!-- Password input and errors -->  
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="password" autocomplete="off" [(ngModel)]="model.password" #password="ngModel"
+        [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6" />
+      <div *ngIf="password.invalid" class="invalid-feedback">
+        <div *ngIf="password.errors.required">Password è richiesta</div>
+        <div *ngIf="password.errors?.minlength">Password deve essere lunga almeno 6 caratteri</div>
+      </div>
+    </div>
+  
+    <!-- Confirm Password input and errors -->  
+    <div class="form-group">
+      <label for="cpassword">Conferma Password</label>
+      <input type="password" class="form-control" name="cpassword" autocomplete="off" [(ngModel)]="model.cpassword" #cpassword="ngModel"
+        [ngClass]="{ 'is-invalid': (f.submitted && cpassword.invalid) || f.errors?.failedMatchPasswords }" required
+        minlength="6" />
+      <div *ngIf="f.errors?.failedMatchPasswords" class="invalid-feedback">
+        <div *ngIf="cpassword.errors?.minlength">Password deve essere lunga almeno 6 caratteri</div>
+        <div *ngIf="f.errors?.failedMatchPasswords">Password diverse</div>
+      </div>
+    </div>
+
+    <div class="form-group form-action">
+      <button class="btn btn-primary">Registrati!</button>
+    </div>
+
+  </form>
+</div>

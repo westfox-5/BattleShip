@@ -1,0 +1,150 @@
+<h2 style="text-align: center">Chat</h2>
+<div class="container msg-container main">
+
+  <ng-container *ngIf="list; else chatTemplate">
+
+
+    <form>
+      <div class="input-group mb-3">
+        <input #searchText type="text" class="form-control my-input" placeholder="Cerca un utente...">
+        <div class="input-group-append">
+          <button class="btn btn-outline-light my-btn" type="submit" (click)="search(searchText.value); searchText.value = '';">
+            <i class="material-icons">search</i>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <hr style="background-color:white" />
+
+    <div class="scrollbar scrollbar-primary">
+      <li *ngFor="let item of contacts; let i=index;" style="overflow:hidden">
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2 flexbox-container" style="cursor: pointer;" (click)="loadChat(item)">
+            <span [ngClass]="{'online': item.isOnline, 'offline': !item.isOnline}"></span>
+          </div>
+
+
+          <div class="col col-lg-7 msg-title left hypen" (click)="loadChat(item)" style="cursor: pointer;">
+            {{ item.nickname }}
+
+            <div class="msg-timestamp-list">
+              {{item.timestamp!==-1?item.timestamp.slice(0,10) + ' alle ' + item.timestamp.slice(11,16):''}}
+            </div>
+          </div>
+
+          <div class="col col-lg-2 flexbox-container">
+            <i class="material-icons" (click)="info(item)" style="cursor: pointer">info</i>
+          </div>
+
+        </div>
+        <hr style="background-color:white" />
+      </li>
+    </div>
+  </ng-container>
+
+  <ng-template #chatTemplate>
+
+
+    <div [hidden]="game">
+      <div class="row ml-1">
+        <div class="col">
+          <div class="d-inline">
+            <button style="height:40px" class="btn btn-dark" type="button" (click)="goBack()">
+              <i class="material-icons">arrow_back</i>
+            </button>
+            <div class="d-inline msg-title hypen">
+              {{chat.nickname}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr style="background-color:white" />
+
+    </div>
+
+    <div class="scrollbar scrollbar-primary" id="chat_list">
+      <li *ngFor="let msg of chat.messages; let i=index">
+        <div class="row-fluid">
+
+          <div class="col span6 message" [ngClass]="{'response': msg.from===chat.id, 'send': msg.from!==chat.id}">
+
+            <p class="msg-text">
+              {{msg.text}}
+            </p>
+            <p class="msg-timestamp">
+              {{msg.timestamp!==-1?msg.timestamp.slice(0,10) + ' alle ' + msg.timestamp.slice(11,16):''}}
+            </p>
+
+          </div>
+
+        </div>
+        <div [hidden]=true *ngIf="i===chat.messages.length-1">{{ updateScroll() }}</div>
+      </li>
+
+
+    </div>
+
+
+    <form>
+      <div class="input-group mb-3 msg-input">
+        <input #msgText type="text" class="form-control my-input" placeholder="Scrivi un messaggio...">
+        <div class="input-group-append">
+          <button class="btn btn-outline-light my-btn" type="submit" (click)="send(msgText.value); msgText.value = '';">
+            <i class="material-icons">send</i>
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </ng-template>
+</div>
+
+
+<!-- Modal INFO  -->
+<button [hidden]="true" id="openInfoModal" data-toggle="modal" data-target="#infoModal" data-backdrop="static"
+  data-keyboard="false"></button>
+<div class="modal fade" tabindex="-1" id="infoModal" role="dialog" aria-labelledby="exampleModalCenterTitle">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title hypen">{{userInfo.nickname }}</h1>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <h4 [ngStyle]="{'color': userInfo.isOnline?'green':'red'}">
+          Al momento è {{ userInfo.isOnline?'online':'offline' }}
+        </h4>
+        <h4>
+          {{ userInfo.isInRoom?'In attesa' : userInfo.isInGame?'In gioco': ''}}
+        </h4>
+
+        <h3>Statistiche partite</h3>
+        <ul>
+          <li class="pointer">Vittorie: {{ userInfo.win }}</li>
+          <li class="pointer">
+            Sconfitte: {{ userInfo.lose }}
+
+          </li>
+          <li class="pointer">
+            Vittorie / Sconfitte: {{ userInfo.lose !== 0 ? (userInfo.win / userInfo.lose).toFixed(3) : userInfo.win }}
+
+          </li>
+
+          <li class="pointer">
+            Vittorie / Totali: {{ (userInfo.lose + userInfo.win) !== 0 ? (userInfo.win / (userInfo.win +
+            userInfo.lose)).toFixed(3) : 0 }}
+
+          </li>
+
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>

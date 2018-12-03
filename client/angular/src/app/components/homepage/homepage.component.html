@@ -1,0 +1,129 @@
+<ng-container *ngIf="hosting; then hostingTemplate else elseTemplate"></ng-container>
+
+<ng-template #hostingTemplate>
+
+  <nav class="navbar navbar-light navbar-expand-xl navbar-fixed-top">
+    <div class="container-fluid">
+
+      <div class="row" style="width:100%">
+        <div class="col col-md-4">
+          <!-- Sinistra -->
+
+          <div class="navbar-brand title">
+            <img src="assets/icons/win/256x256.ico" width="30" height="30" class="d-inline-block align-top" alt="">
+            <a style="text-decoration: none; color: white">
+              BattleShip </a>
+          </div>
+        </div>
+
+        <div class="col" style="text-align: center">
+          <!-- Centrale -->
+          <button class="btn btn-danger" (click)="removeMatch(true)">ANNULLA</button>
+        </div>
+
+        <div class="col" style="text-align: right;">
+          <!-- Destra -->
+
+          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true">
+            {{ nickname }}
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" routerLink="/profile" routerLinkActive="active">Profilo</a>
+            <a *ngIf="isAdmin" class="dropdown-item" routerLink="/admin" routerLinkActive="active">Pannello
+              Admin</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" (click)="logout()">Logout</a>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </nav>
+
+
+
+
+
+  <div class="display">
+    <div class="display__content">
+      <div id="loadFacebookG">
+        <div id="blockG_1" class="facebook_blockG"></div>
+        <div id="blockG_2" class="facebook_blockG"></div>
+        <div id="blockG_3" class="facebook_blockG"></div>
+      </div>
+      <h1 style="text-align: center">Attendi che un altro giocatore si unisca</h1>
+      <div class="radar">
+        <div class="radar__inner">
+          <div class="radar__inner__scan"></div>
+        </div>
+        <div class="radar__ufos"></div>
+      </div>
+      <h2>Scanning...</h2>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #elseTemplate>
+
+  <nav class="navbar navbar-light navbar-expand-xl navbar-fixed-top">
+    <div class="container-fluid">
+
+      <div class="row" style="width:100%">
+        <div class="col col-md-4">
+          <!-- Sinistra -->
+
+          <div class="navbar-brand title">
+            <img src="assets/icons/win/256x256.ico" width="30" height="30" class="d-inline-block align-top" alt="">
+            <a style="text-decoration: none; color: white">
+              BattleShip </a>
+          </div>
+        </div>
+
+        <div class="col" style="text-align: center">
+          <!-- Centrale -->
+          <button class="btn btn-success" (click)="createMatch()">CREA PARTITA</button>
+        </div>
+
+        <div class="col" style="text-align: right;">
+          <!-- Destra -->
+
+          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true">
+            {{ nickname }}
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" routerLink="/profile" routerLinkActive="active">Profilo</a>
+            <a *ngIf="isAdmin" class="dropdown-item" routerLink="/admin" routerLinkActive="active">Pannello
+              Admin</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" (click)="logout()">Logout</a>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </nav>
+
+  <div class="row-fluid">
+
+    <div class="col span4 order-sm-4 scoreboard">
+      <app-scoreboard></app-scoreboard>
+    </div>
+
+    <div class="col span4 order-first games">
+      <app-game-list></app-game-list>
+    </div>
+
+
+    <div class="col span4 order-sm-8 chat">
+      <app-chat></app-chat>
+    </div>
+
+  </div>
+</ng-template>

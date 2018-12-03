@@ -1,0 +1,55 @@
+<div class="container-fluid">
+
+  <h2 style="text-align: center">Stanze di gioco</h2>
+  <ng-container *ngIf="rooms.length!==0; else elseTemplate">
+
+    <div class="main">
+
+      <div>
+        <li *ngFor="let room of roomsToShow">
+          
+          <div class="row">
+            <div class="col span10 ml-4">
+              {{ room.nickname }}
+              <p [ngStyle]="{'color': room.ratio > 1 ? 'red' : 'green' }">W/L : {{ room.ratio.toFixed(3) }} </p>
+            </div>
+
+
+            <div class="col span2">
+              <button class=" btn btn-success float-right" (click)="joinMatch(room)">
+                Partecipa</button>
+            </div>
+          </div>
+          <hr style="background-color:white"/>
+        </li>
+      </div>
+
+    </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <div class="main" style="text-align: center;">
+      Nessuna stanza disponibile :(
+    </div>
+  </ng-template>
+
+  <div class="row-fluid" *ngIf="roomsToShow.length !== 0" style="margin-top: 20px;">
+    <div class="col span3">
+      <button class="btn btn-outline-light" *ngIf="currentPage !== 0" style="width: 100%; text-align: center" (click)="pagination(-1)">
+        &lt;&lt;
+      </button>
+    </div>
+
+    <div class="class span6">
+      <p class="text-muted" *ngIf="lastpg !== -1" style="text-align:center;">Pagina {{currentPage + 1}} di {{lastpg +
+        1}}</p>
+    </div>
+
+    <div class="col span3">
+      <button class="btn btn-outline-light" *ngIf="lastpg !== -1 && currentPage !== lastpg" style="width: 100%; text-align: center"
+        (click)="pagination(1)">
+        &gt;&gt;
+      </button>
+    </div>
+  </div>
+
+</div>

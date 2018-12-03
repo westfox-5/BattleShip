@@ -1,0 +1,9 @@
+.list-group-item {
+    background-color: transparent;
+    color: #fff;
+}
+
+li {
+    list-style: none;
+    padding: 10px;
+}

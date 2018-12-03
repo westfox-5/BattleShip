@@ -1,0 +1,205 @@
+{"versione":"1.0",
+ "rilascio": "20181128",
+ "endpoint": 
+ [{
+        "metodo": "GET",
+        "percorso": "/",
+        "parametri": [],
+        "descrizione": "Restituisce lista degli endpoint",
+        "precondizione": "-",
+        "postcondizione": "-",
+        "return": "[{metodo: string, percorso: string, parametri: string, descrizione: string, precondizione: string, postcondizione: string, return: string}]"
+
+    },
+    {
+        "metodo": "POST",
+        "percorso": "/auth",
+        "parametri": ["nickname: string ", "password: string"],
+        "descrizione": "Effettua la registrazione di un nuovo utente",
+        "precondizione": "-",
+        "postcondizione": "Se il nickname non è già registrato, l'utente viene registrato",
+        "return": "{error: boolean, message: string, id: string}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/auth",
+        "parametri": ["nickname: string", "password: string "],
+        "descrizione": "Autentica un utente già registrato",
+        "precondizione": "L'account associato all'utente è valido",
+        "postcondizione": "Restituisce JWT firmato se nickname e password corrispondono a quelli presenti nel database",
+        "return": "{error: boolean, message: string, token: string}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/auth/renew",
+        "parametri": [],
+        "descrizione": "Rinnova un token ancora valido",
+        "precondizione": "JWT valido presente nell'header della richiesta",
+        "postcondizione": "Restituisce nuovo JWT firmato",
+        "return": "{error: boolean, message: string, token: string}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/users/profile",
+        "parametri": [],
+        "descrizione": "Restituisce informazioni personali",
+        "precondizione": "JWT valido presente nell'header della richiesta",
+        "postcondizione": "-",
+        "return": "{error: boolean, message: string, game: [{win: boolean, avv_id: string, avv_name: string, timestamp: date}]}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/users/scoreboard",
+        "parametri": ["order: {0,1,2}"],
+        "descrizione": "Restituisce la classifica dei 10 migliori giocatori ordinati secondo order, 0: vittorie totali, 1: rapporto vittorie su sconfitte, 2: rapporto vittorie su totale",
+        "precondizione": "JWT valido presente nell'header della richiesta",
+        "postcondizione": "-",
+        "return": "{error: boolean, message: string, list: [{_id: string, nickname: string, win: int, lose: int}]}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/users/:id",
+        "parametri": [],
+        "descrizione": "Restituisce informazioni dell'utente identificato da id",
+        "precondizione": "JWT valido presente nell'header della richiesta",
+        "postcondizione": "-",
+        "return": "{error: boolean, message: string, info: {win: int, lose: int, nickname: string, isOnline: boolean, isInRoom: boolean, idRoom: string, isInGame: boolean}}"
+
+    },
+    {
+        "metodo": "POST",
+        "percorso": "/room",
+        "parametri": [],
+        "descrizione": "Crea una nuova stanza di gioco",
+        "precondizione": "JWT valido presente nell'header della richiesta, l'utente deve essere online, non essere proprietario di altre stanze attive e non essere in partita",
+        "postcondizione": "Gli altri utenti potranno partecipare alla stanza creata",
+        "return": "{error: boolean, message: string}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/room",
+        "parametri": ["skip: int", "limit: int"],
+        "descrizione": "Restituisce elenco stanze di gioco presenti",
+        "precondizione": "JWT valido presente nell'header della richiesta",
+        "postcondizione": "-",
+        "return": "{error: boolean, message: string, room: [{_id: string, host_id: string, nickname: string, ratio: float}]}"
+
+    },
+    {
+        "metodo": "DELETE",
+        "percorso": "/room",
+        "parametri": [],
+        "descrizione": "Elimina la propria stanza di gioco",
+        "precondizione": "JWT valido presente nell'header della richiesta e stanza ancora attiva ",
+        "postcondizione": "La stanza viene rimossa",
+        "return": "{error: boolean, message: string}"
+
+    },
+    {
+        "metodo": "POST",
+        "percorso": "/room/:id",
+        "parametri": [],
+        "descrizione": "Partecipa alla partita identificata da id",
+        "precondizione": "JWT valido presente nell'header della richiesta, utente online, non proprietario di stanze attive e in nessuna partita attiva",
+        "postcondizione": "La stanza viene rimossa, il proprietario della stanza e questo utente iniziano la partita",
+        "return": "{error: boolean, message: string}"
+
+    },
+    {
+        "metodo": "POST",
+        "percorso": "/game/start",
+        "parametri": ["[{row: int, col: int, orientation: {'orizzontale', 'verticale'}, length: int}]"],
+        "descrizione": "Invia lo schieramento iniziale della partita, navi richieste: 4 lunghe 2, 2 lunghe 3, 2 lunghe 4, 1 lunga 5",
+        "precondizione": "JWT valido presente nell'header della richiesta, utente in partita e non ha già inviato lo schieramento",
+        "postcondizione": "Lo schieramento iniziale è salvato, se entrambi i giocatori hanno completato questa fase, inizia la partita a turni",
+        "return": "{error:boolean, message: string, turn:boolean}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/game/surrender",
+        "parametri": [],
+        "descrizione": "Arresa dell'utente",
+        "precondizione": "JWT valido presente nell'header della richiesta, utente in partita",
+        "postcondizione": "la partita termina, se entrambi i giocatori avevano inviato lo schieramento iniziale viene salvata per le statistiche",
+        "return": "{error:boolean, message: string}"
+
+    },
+    {
+        "metodo": "POST",
+        "percorso": "/game/move",
+        "parametri": ["row: int", "col: int "],
+        "descrizione": "Invia la mossa di una partita",
+        "precondizione": "JWT valido presente nell'header della richiesta, l'utente è in partita, entrambi gli schemi di gioco sono stati inviati ed è il turno del giocatore",
+        "postcondizione": "La mossa viene salvata e il turno passa all'altro giocatore",
+        "return": "{error:boolean, message: string, colpita:boolean, affondata:boolean, vinto: boolean}"
+
+    },
+    {
+        "metodo": "POST",
+        "percorso": "/message/:id",
+        "parametri": ["text: string"],
+        "descrizione": "Invia un messaggio all'utente identificato da id",
+        "precondizione": "JWT valido presente nell'header della richiesta, id utente valido",
+        "postcondizione": "Il messaggio è inviato",
+        "return": "{error:boolean, message: string}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/message",
+        "parametri": ["skip: int", "limit: int"],
+        "descrizione": "Restituisce l'elenco degli utenti in ordine per ultimo messaggio inviato",
+        "precondizione": "JWT valido presente nell'header della richiesta",
+        "postcondizione": "-",
+        "return": "{error:boolean, message: string, list:[{isOnline:boolean, id: string, nickname: string, timestamp: date}]}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/message/:id",
+        "parametri": ["skip: int", "limit: int"],
+        "descrizione": "Restituisce l'elenco dei messaggi scambiati con l'utente identificato da id",
+        "precondizione": "JWT valido presente nell'header della richiesta",
+        "postcondizione": "-",
+        "return": "{error:boolean, message: string, list:[{_id: string, to: string, from: string, timestamp:date, text: string}]}"
+
+    },
+    {
+        "metodo": "GET",
+        "percorso": "/admin/users",
+        "parametri": ["skip: int", "limit: int"],
+        "descrizione": "Restituisce l'elenco degli utenti con informazioni dettagliate",
+        "precondizione": "JWT valido presente nell'header della richiesta e utente con privilegi admin",
+        "postcondizione": "-",
+        "return": "{error:boolean, message: string, list:[{id: string, nickname: string, win: int, lose: int, ratio:float, isOnline:boolean, isAdmin:boolean, isInRoom:boolean, isInGame:boolean}]}"
+
+    },
+    {
+        "metodo": "PUT",
+        "percorso": "/admin/:id",
+        "parametri": [],
+        "descrizione": "Rende l'untente identificato da id amministratore",
+        "precondizione": "JWT valido presente nell'header della richiesta, l'utente ha privilegi da admin, l'utente id non è amministratore",
+        "postcondizione": "L'utente identificato da id è amministratore",
+        "return": "{error:boolean, message: string}"
+
+    },
+    {
+        "metodo": "DELETE",
+        "percorso": "/admin/:id",
+        "parametri": ["reason: sting"],
+        "descrizione": "Elimina l'utente identificato da id",
+        "precondizione": "JWT valido presente nell'header della richiesta, l'utente ha privilegi da admin, l'utente id non è amministratore ",
+        "postcondizione": "L'utente id viene eliminato",
+        "return": "{error:boolean, message: string}"
+
+    }
+]
+}

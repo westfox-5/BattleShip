@@ -1,0 +1,66 @@
+html,
+body {
+  height: 100%;
+  background-color: #252830;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.navbar {
+  min-height: 80px;
+  background-color: #3d4354;
+  padding:20px;
+}
+
+.modal {
+  color: black;
+}
+
+.main {
+  background-color: #363b47;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+}
+
+.login-reg-container {
+  margin-top: 20px;
+  padding: 20pt;
+  background-color: rgba(54, 59, 71, 0.50);
+}
+
+
+.form-action {
+  margin: 0 auto;
+  background-color: transparent;
+  text-align: center;
+}
+
+.blinker {
+  animation: blinkerAnim 1s linear infinite;
+}
+
+.title {
+  font-size: 150%;
+  cursor: pointer;
+}
+
+.hypen {
+  /* Old IE Support */
+  -ms-word-break: break-all;
+
+  /* Non standard for webkit */
+  word-break: break-word;
+
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
+@keyframes blinkerAnim {
+  50% {
+    opacity: 0;
+  }
+}

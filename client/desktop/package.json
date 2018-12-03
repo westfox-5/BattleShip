@@ -1,0 +1,46 @@
+{
+  "name": "battleship-desktop",
+  "version": "1.0.0",
+  "description": "Desktop version of BattleShip",
+  "private": true,
+  "main": "electron.js",
+  "scripts": {
+    "build": "cd ../angular && ng build -c electron --output-path ../desktop/dist && cd -",
+    "start": "electron .",
+    "generate": "rm -rf releases && electron-builder && mv releases/battleship* ../../releases/desktop/"
+  },
+  "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^3.0.9",
+    "electron-builder": "^20.36.2"
+  },
+  "build": {
+    "appId": "battleship",
+    "directories": {
+      "output": "releases"
+    },
+    "dmg": {
+      "icon": "./dist/assets/icons/icns/256x256.icns",
+      "contents": [
+        {
+          "x": 110,
+          "y": 150,
+          "type": "link",
+          "name": "BattleShip",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": "AppImage",
+      "executableName": "BattleShip",
+      "category": "game",
+      "icon": "./dist/assets/icons/png/256x256.png"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "./dist/assets/icns/ico/256x256.ico"
+    }
+  }
+}

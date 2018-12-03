@@ -1,0 +1,116 @@
+.navbar-brand {
+    font-size: 150%;
+    color: white;
+    }
+
+h3 {
+    text-align: center;
+    margin: 30px;
+    padding: 8pt;
+    background-color: #363b47;
+}
+
+
+.text {
+  text-align: center;
+}
+
+/* ANIMATION BOAT */
+/*/////////////////////////////////////////////////////////////////////////*/
+  
+  .box-drift {
+    position: relative;
+    width: 100px;
+    margin: 20px;
+    animation: doDrift 16s infinite;
+  }
+  
+  .box-bob {
+    width: 100px;
+    background: none;
+    animation: doBob 1.5s infinite;
+  }
+  
+  .box-pitch {    
+    height: 100px;
+    animation: doPitch 2s infinite;
+  }
+  
+  .left-sail {
+    background: white;
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    width: 40%;
+    height: 40%;
+    -webkit-clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+  }
+  
+  .right-sail {
+    background: white;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    width: 45%;
+    height: 55%;
+    -webkit-clip-path: polygon(0 0, 0% 100%, 100% 100%);
+    clip-path: polygon(0 0, 0% 100%, 100% 100%);
+  }
+  
+  .hull {
+    background: white;
+    position: absolute;
+    top: 65%;
+    left: 10%;
+    width: 80%;
+    height: 25%;
+    -webkit-clip-path: polygon(0 0, 100% 0, 79% 100%, 18% 100%);
+    clip-path: polygon(0 0, 100% 0, 79% 100%, 18% 100%);
+  }
+  
+  @keyframes doBob {
+    0% {
+      top: 55%;
+    }
+    50% {
+      top: 47%;
+    }
+    100% {
+      top: 55%;
+    }
+  }
+  @keyframes doDrift {
+    0% {
+      left: 0%;
+    }
+    10% {
+      left: 10%;
+    }
+    20% {
+      left: 20%;
+    }
+    50% {
+      left: 50%;
+    }
+    50% {
+      left: 50%;
+    }
+    80% {
+      left: 80%;
+    }
+    100% {
+      left: 90%;
+    }
+  }
+  @keyframes doPitch {
+    0% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    100% {
+      transform: rotate(-10deg);
+    }
+  }

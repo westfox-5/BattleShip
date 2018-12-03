@@ -1,0 +1,309 @@
+.titleBoards {
+  display: none;
+}
+
+tr {
+  width: 0%;
+  height: 0%;
+}
+
+td {
+  padding: 0;
+  width: 10%;
+  height: 10%;
+}
+
+#my-board {
+  transform: perspective(500px) rotateX(50deg);
+  transform-origin: 50% 0;
+  margin: 0 auto;
+  height: 25vh;
+}
+
+#my-guesses {
+  transform: perspective(500px);
+  margin: 0 auto;
+  width: 100%;
+  height: 55vh;
+}
+
+#preparation {
+  transform: perspective(500px);
+  width: 100%;
+  height: 70vh;
+}
+
+hr {
+  display: none;
+}
+
+
+@media only screen and (max-device-width: 480px) {
+  hr {
+    display: block;
+  }
+
+  .board {
+    width: 100%;
+    height: 400px;
+  }
+
+  #my-board,
+  #my-guesses,
+  #preparation {
+    width: 100% !important;
+    height: 55vh;
+    transform: perspective(500px);
+    transform-origin: 0% 0%;
+  }
+
+  .modal {
+    margin-top: 100px;
+  }
+}
+
+p {
+  text-align: center;
+}
+
+#testo {
+  color: black;
+}
+
+#titolo-insert {
+  color: blue;
+}
+#titolo-remove {
+  color: red;
+}
+
+/* .cacciatorpediniere {
+  content: url('../../assets/Cacciatorpediniere.png');
+}
+
+.sottomarino {
+  content: url('../../assets/Sottomarino.png');
+}
+
+.portaerei {
+  content: url('../../assets/Portaerei.png');
+}
+
+.corazzata {
+  content: url('../../assets/Corazzata.png');
+} */
+
+.empty {
+  display: none;
+}
+
+#save {
+  margin-top: 10px;
+}
+
+.modal-orientamento {
+  color: black;
+  text-align: center;
+}
+
+.modal-empty {
+  color: gray;
+  text-align: center;
+}
+
+.boatContainer {
+  position: absolute;
+  height: 100%; width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+
+/* classi per campi di gioco */
+.cella {
+  width: 100%; height: 100%;
+  cursor: default;
+}
+
+.mare {
+  background-color: rgba(0, 153, 255, 1);
+  border: solid transparent 1px;
+}
+
+div.click:hover {
+  cursor: pointer;
+  border: solid blue 1px;
+}
+
+.invalida {
+  cursor: default;
+  background-color: rgba(0, 153, 255, 0.5);
+}
+
+.barca {
+  background-color: gray;
+}
+
+.barca-colpita {
+  background-color: rgba(128, 128, 128, 0.5);
+}
+
+.barca-affondata {
+  background-color: red;
+}
+
+
+
+/* -----------------------------------------*/
+/* ANIMAZIONE ATTESA GIOCATORE */
+/* -----------------------------------------*/
+
+.display__content {
+  width: 100%;
+  max-width: 40em;
+  padding: 1em;
+  margin: 0 auto;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.display__content h1,
+.display__content h2 {
+  margin: 2em 0;
+  font-weight: lighter;
+  font-size: 1.25rem;
+}
+
+#loadFacebookG {
+  margin: auto;
+  margin: 20px;
+
+  width: 86px;
+  height: 86px;
+  display: block;
+  position: relative;
+}
+
+.facebook_blockG {
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(255, 255, 255);
+  float: left;
+  height: 61px;
+  margin-left: 5px;
+  width: 16px;
+  opacity: 0.1;
+  animation-name: bounceG;
+  -o-animation-name: bounceG;
+  -ms-animation-name: bounceG;
+  -webkit-animation-name: bounceG;
+  -moz-animation-name: bounceG;
+  animation-duration: 1.69s;
+  -o-animation-duration: 1.69s;
+  -ms-animation-duration: 1.69s;
+  -webkit-animation-duration: 1.69s;
+  -moz-animation-duration: 1.69s;
+  animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-direction: normal;
+  -o-animation-direction: normal;
+  -ms-animation-direction: normal;
+  -webkit-animation-direction: normal;
+  -moz-animation-direction: normal;
+  transform: scale(0.7);
+  -o-transform: scale(0.7);
+  -ms-transform: scale(0.7);
+  -webkit-transform: scale(0.7);
+  -moz-transform: scale(0.7);
+}
+
+#blockG_1 {
+  animation-delay: 0.51s;
+  -o-animation-delay: 0.51s;
+  -ms-animation-delay: 0.51s;
+  -webkit-animation-delay: 0.51s;
+  -moz-animation-delay: 0.51s;
+}
+
+#blockG_2 {
+  animation-delay: 0.68s;
+  -o-animation-delay: 0.68s;
+  -ms-animation-delay: 0.68s;
+  -webkit-animation-delay: 0.68s;
+  -moz-animation-delay: 0.68s;
+}
+
+#blockG_3 {
+  animation-delay: 0.85s;
+  -o-animation-delay: 0.85s;
+  -ms-animation-delay: 0.85s;
+  -webkit-animation-delay: 0.85s;
+  -moz-animation-delay: 0.85s;
+}
+
+
+
+@keyframes bounceG {
+  0% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
+
+@-o-keyframes bounceG {
+  0% {
+    -o-transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    -o-transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
+
+@-ms-keyframes bounceG {
+  0% {
+    -ms-transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    -ms-transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
+
+@-webkit-keyframes bounceG {
+  0% {
+    -webkit-transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    -webkit-transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
+
+@-moz-keyframes bounceG {
+  0% {
+    -moz-transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    -moz-transform: scale(0.7);
+    opacity: 0.1;
+  }
+}
