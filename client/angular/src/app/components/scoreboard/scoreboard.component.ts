@@ -1,6 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService } from '@serv/user.service';
-import { Subscription } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import {
+  UserService
+} from '@serv/user.service';
+import {
+  Subscription
+} from 'rxjs';
 
 @Component({
   selector: 'app-scoreboard',
@@ -13,17 +21,36 @@ export class ScoreboardComponent implements OnInit, OnDestroy {
 
   subscribers: Subscription[] = [];
 
-  scoreboards: [
-    {nickname: string, win: number, lose: number, id: string }[],
-    {nickname: string, win: number, lose: number,  id: string }[],
-    {nickname: string, win: number, lose: number,  id: string }[]];
+  scoreboards: [{
+      nickname: string,
+      win: number,
+      lose: number,
+      id: string
+    } [],
+    {
+      nickname: string,
+      win: number,
+      lose: number,
+      id: string
+    } [],
+    {
+      nickname: string,
+      win: number,
+      lose: number,
+      id: string
+    } []
+  ];
 
   constructor(private _us: UserService) {
     this.index = 0;
   }
 
   ngOnInit() {
-    this.scoreboards = [ [], [], [] ];
+    this.scoreboards = [
+      [],
+      [],
+      []
+    ];
 
     if (this._us.getToken()) {
       this.setScoreboard();
@@ -33,21 +60,21 @@ export class ScoreboardComponent implements OnInit, OnDestroy {
 
   change(idx) {
     this.index = idx;
-
     this.setScoreboard();
   }
 
   setScoreboard() {
-      this.subscribers.push(this._us.scoreboard(this.index)
+    this.subscribers.push(this._us.scoreboard(this.index)
       .subscribe(
         (data) => {
           this.scoreboards[this.index] = data.list;
-        }));
-    }
+        }
+      ));
+  }
 
 
-    ngOnDestroy() {
-      this.subscribers.forEach(e => e.unsubscribe());
-    }
+  ngOnDestroy() {
+    this.subscribers.forEach(e => e.unsubscribe());
+  }
 
 }

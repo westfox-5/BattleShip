@@ -23,34 +23,26 @@ export class GameService {
     this._nickname.next(n);
   }
 
-
-  // hosta una nuova partita
   host(): Observable<any> {
     return this.http.post( environment.server_url + '/room', {},  this._us.setOptions());
   }
 
-  // richiede la lista di tutte le stanze
   getHostedMatches(): Observable<any> {
     return this.http.get( environment.server_url + '/room?limit=1000', this._us.setOptions());
   }
 
-  // rimuove la stanza dal database
-  // (tramite lo userID presente nel token)
   removeHost(): Observable<any> {
     return this.http.delete( environment.server_url + '/room', this._us.setOptions());
   }
 
-  // partecipazione ad una partita (dalla lista delle stanze)
   joinMatch(gameID) {
     return this.http.post(environment.server_url + '/room/' + gameID, {}, this._us.setOptions());
   }
 
-  // manda lo schema del campo dopo la fase preparatoria
   startMatch(schema) {
     return this.http.post(environment.server_url + '/game/start', schema, this._us.setOptions());
   }
 
-  // manda una richiesta di arresa
   surrend() {
     return this.http.get(environment.server_url + '/game/surrender', this._us.setOptions());
   }

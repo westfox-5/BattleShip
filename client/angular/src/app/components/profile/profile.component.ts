@@ -1,10 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { ToastrManager } from 'ng6-toastr-notifications';
-import { UserService } from '@serv/user.service';
-import { SocketService } from '@serv/socket.service';
-import { Chart } from 'chart.js';
-import { Subscription } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import {
+  Router
+} from '@angular/router';
+import {
+  ToastrManager
+} from 'ng6-toastr-notifications';
+import {
+  UserService
+} from '@serv/user.service';
+import {
+  SocketService
+} from '@serv/socket.service';
+import {
+  Chart
+} from 'chart.js';
+import {
+  Subscription
+} from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -17,13 +33,27 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   subscribers: Subscription[] = [];
 
-  info: any;
-  games: any;
+  info: {
+    win: Number;
+    lose: Number;
+    games: {
+      win: Boolean;
+      avv_id: String,
+      avv_name: String,
+      timestamp: String
+    }[];
+  };
+  games: {
+    win: Boolean;
+    avv_id: String,
+    avv_name: String,
+    timestamp: String
+  }[];
 
   constructor(private _us: UserService,
     private toastr: ToastrManager,
     private _ss: SocketService,
-    private _rt: Router) { }
+    private _rt: Router) {}
 
   ngOnInit() {
 
@@ -33,7 +63,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.isAdmin = this._us.isAdmin();
     this._ss.initSocket(this._us.getCryptedToken());
 
-    this.info = { games: [] };
+    this.info = {win: 0, lose: 0, games: []};
 
     this.loadStats();
   }
@@ -53,13 +83,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   loadChart() {
 
-    const arr: { data: string, vinte: number, perse: number }[] = [];
+    const arr: {
+      data: string,
+      vinte: number,
+      perse: number
+    } [] = [];
 
     for (let i = 0; i < this.info.games.length; ++i) {
       const object = {
-        data : this.info.games[i].timestamp.slice(8, 10) + '/' +
-              this.info.games[i].timestamp.slice(5, 7) + '/' +
-              this.info.games[i].timestamp.slice(0, 4),
+        data: this.info.games[i].timestamp.slice(8, 10) + '/' +
+          this.info.games[i].timestamp.slice(5, 7) + '/' +
+          this.info.games[i].timestamp.slice(0, 4),
         vinte: this.info.games[i].win ? 1 : 0,
         perse: !this.info.games[i].win ? 1 : 0
       };
@@ -83,49 +117,47 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const chart = new Chart('chart', {
       type: 'line',
       data: {
-        labels : arr.map( c => c.data ),
+        labels: arr.map(c => c.data),
 
-        datasets: [ {
+        datasets: [{
           label: 'Vinte',
-          data: arr.map( c => c.vinte),
+          data: arr.map(c => c.vinte),
           lineTension: 0,
           borderColor: 'green',
           backgroundColor: 'rgba(0, 255, 0, 0.2)',
           borderWidth: 1
         }, {
           label: 'Perse',
-          data: arr.map( c => c.perse),
+          data: arr.map(c => c.perse),
           lineTension: 0,
           borderColor: 'red',
           backgroundColor: 'rgba(255, 0, 0, 0.2)',
           borderWidth: 1
-        }
-       ]
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         legend: {
           labels: {
-              // This more specific font property overrides the global property
-              fontColor: 'white',
-              fontSize: 15
-            }
+            fontColor: 'white',
+            fontSize: 15
+          }
         },
         scales: {
           yAxes: [{
             gridLines: {
-              display: true ,
+              display: true,
               zeroLineColor: 'rgba(255, 255, 255, 0.2)',
               color: 'rgba(255, 255, 255, 0.2)'
             },
             ticks: {
-                fontColor: 'white',
-                beginAtZero: true,
-                callback: function(value, index, values) {
-                  if (Math.floor(value) === value) {
-                      return value;
-                  }
+              fontColor: 'white',
+              beginAtZero: true,
+              callback: function (value, index, values) {
+                if (Math.floor(value) === value) {
+                  return value;
+                }
               }
             }
           }],
@@ -136,10 +168,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
               color: 'rgba(255, 255, 255, 0.2)'
             },
             ticks: {
-                fontColor: 'white',
-                beginAtZero: true
+              fontColor: 'white',
+              beginAtZero: true
             }
-        }]
+          }]
         }
       }
     });

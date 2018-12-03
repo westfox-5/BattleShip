@@ -65,9 +65,9 @@ class SocketService {
     get USER_ONLINE() { return 'user-online'; }
     get USER_DELETE() { return 'user-delete'; }
     get ROOM() { return 'room'; }
-    get ROOM_DELETE() { return 'delete_room'; }
+    get ROOM_DELETE() { return 'delete-room'; }
     get GAME() { return 'game'; }
-    get GAME_START() { return 'start_game'; }
+    get GAME_START() { return 'start-game'; }
     get GAME_MOVE() { return 'game-move'; }
     get GAME_SURRENDER() { return 'surrend'; }
     get MESSAGE() { return 'message'; }

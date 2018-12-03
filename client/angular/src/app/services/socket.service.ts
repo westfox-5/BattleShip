@@ -33,7 +33,7 @@ export class SocketService {
     public onRoomsUpdate() {
         return new Observable<any>(observer => {
             this.socket.on('room', (room) => observer.next({room: room, delete: false}));
-            this.socket.on('delete_room', (room) => observer.next({room: room, delete: true}));
+            this.socket.on('delete-room', (room) => observer.next({room: room, delete: true}));
         });
     }
 
@@ -41,7 +41,7 @@ export class SocketService {
     // ( quando sono l'host ricevo tramite socket questa informazione )
     public onJoinGame() {
         return new Observable<any>(observer => {
-            this.socket.on('start_game', (player) => observer.next(player));
+            this.socket.on('start-game', (player) => observer.next(player));
         });
     }
 
@@ -57,7 +57,6 @@ export class SocketService {
         });
     }
 
-    // metodo per intercettare l'evento di una arresa
     public onSurrend() {
         return new Observable<any>( observer => {
             this.socket.on('surrend', () => observer.next());
@@ -74,7 +73,6 @@ export class SocketService {
         return new Observable<any>(observer => {
             this.socket.on('user-online', (data) => observer.next({isOnline: true, user: data}));
             this.socket.on('user-offline', (data) => observer.next({isOnline: false, user: data}));
-
         });
     }
 }
