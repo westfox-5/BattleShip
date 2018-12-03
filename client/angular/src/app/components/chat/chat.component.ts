@@ -90,10 +90,10 @@ export class ChatComponent implements OnInit, OnDestroy {
           });
 
           if ( !trovato && data.user.userId !== this._us.getId() ) {
-            if (data.user.userID !== null) {
+            if (data.user.userId !== null) {
               this.contacts.push( {
                 nickname: data.user.nickname,
-                id: data.user.userID,
+                id: data.user.userId,
                 timestamp: -1,
                 isOnline: data.isOnline
               });
