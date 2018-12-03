@@ -26,7 +26,7 @@ Or choose what to install
     npm run install-desktop
     npm run install-android
 ---
-### Start the local Database
+#### Start the local Database
 
     npm run start-db
 
