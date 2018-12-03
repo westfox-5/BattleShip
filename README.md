@@ -33,14 +33,14 @@ Or choose what to install
 #### Start the server
     
     npm run start-server
-Server runs at [localhost:8080][s-url]
+Server runs at [localhost:8080][s]
 
 ---
 
 #### Build & Execute clients
 Choose what to execute
     
-* Web:  [localhost:4200][c-url]
+* Web:  [localhost:4200][c]
 
         npm run start-web
 
@@ -58,7 +58,5 @@ Choose what to execute
 
 
 [taw]:http://www.dsi.unive.it/~bergamasco/webtech.html
-[s]: /server/README.md
-[c]: /client/README.md
-[s-url]: localhost:8080
-[c-url]: localhost:4200
+[s]: localhost:8080
+[c]: localhost:4200
