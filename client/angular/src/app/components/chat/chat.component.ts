@@ -110,7 +110,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.subscribers.push(this._ss.onNewMessage()
     .subscribe(
       (data: any) => {
-        if (data.from === this.chat.id) {
+        if (data.from === this.chat.id || data.from === this._us.getId() ) {
           this.chat.messages.push(data);
         }
 
