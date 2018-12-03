@@ -40,7 +40,7 @@ Server runs at [localhost:8080][s-url]
 #### Build & Execute clients
 Choose what to execute
     
-* Web:  [_localhost:4200_][c-url]
+* Web:  [localhost:4200][c-url]
 
         npm run start-web
 
@@ -55,11 +55,6 @@ Choose what to execute
         
         npm run build-android
         npm run generate-android :: generate an APK file in `releases/android` folder.
-
-
-[//]: # (## [Server documentation][s])
-[//]: # (## [Client documentation][c])
-  
 
 
 [taw]:http://www.dsi.unive.it/~bergamasco/webtech.html
