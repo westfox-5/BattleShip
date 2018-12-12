@@ -15,8 +15,8 @@
     "start-server": "cd server && npm start && cd -",
     "start-web": "cd client/angular && ng serve --host 0.0.0.0 --open",
     "start-desktop": "cd client/desktop && npm run start",
-    "generate-android": "cd client/mobile && npm run generate && cd -",
-    "generate-desktop": "cd client/desktop && npm run generate && cd -"
+    "generate-android": "mkdir -p ./releases/ && mkdir -p ./releases/android && cd client/mobile && npm run generate && cd -",
+    "generate-desktop": "mkdir -p ./releases/ && mkdir -p ./releases/desktop && cd client/desktop && npm run generate && cd -"
   },
   "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
   "license": "ISC",

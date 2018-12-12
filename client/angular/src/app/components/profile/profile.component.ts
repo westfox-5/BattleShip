@@ -34,8 +34,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   subscribers: Subscription[] = [];
 
   info: {
-    win: Number;
-    lose: Number;
+    win: number;
+    lose: number;
     games: {
       win: Boolean;
       avv_id: String,
