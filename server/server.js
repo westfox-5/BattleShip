@@ -15,11 +15,11 @@ const io = require('socket.io')(http);
 
 const PORT = parseInt(process.env.PORT) || 8080;
 
-const result = require('dotenv').config();
-if (result.error) {
-    console.log("File .env non trovato");
-    process.exit(-1);
-}
+//const result = require('dotenv').config();
+//if (result.error) {
+//    console.log("File .env non trovato");
+//    process.exit(-1);
+//}
 if (!process.env.JWT_SECRET) {
     console.log("Chiave JWT_SECRET non trovata");
     process.exit(-1);
