@@ -13,11 +13,10 @@
   "author": "Dametto Alex, Volpe Davide, Zanatta Filippo",
   "license": "ISC",
   "dependencies": {
-    "electron": "^3.0.9",
     "electron-builder": "^20.36.2"
   },
   "devDependencies": {
-    "electron": "^3.0.9",
+    "electron": "^13.1.5",
     "electron-builder": "^20.36.2"
   },
   "build": {
