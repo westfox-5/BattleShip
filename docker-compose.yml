@@ -34,5 +34,20 @@ services:
       MONGO_INITDB_DATABASE: "${DB_NAME}"
     volumes:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  battleship-client:
+    container_name: angular
+    restart: always
+    pull_policy: build
+    depends_on:
+      - battleship-server
+    build:
+      context: ./client/angular
+      dockerfile: Dockerfile
+    networks:
+      - battleship-net
+    ports:
+      - 8081:80
+
 networks:
   battleship-net:

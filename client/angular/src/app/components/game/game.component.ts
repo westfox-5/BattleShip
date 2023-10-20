@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { ToastrManager } from 'ng6-toastr-notifications';
-import { UserService } from '@serv/user.service';
-import { SocketService } from '@serv/socket.service';
-import { GameService } from '@serv/game.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { UserService } from "@serv/user.service";
+import { SocketService } from "@serv/socket.service";
+import { GameService } from "@serv/game.service";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  selector: "app-game",
+  templateUrl: "./game.component.html",
+  styleUrls: ["./game.component.css"],
 })
 export class GameComponent implements OnInit, OnDestroy {
   game: any;
@@ -41,10 +41,11 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(
     private _gs: GameService,
-    private toastr: ToastrManager,
+    private toastr: ToastrService,
     private _us: UserService,
     private _ss: SocketService,
-    private router: Router) {
+    private router: Router
+  ) {
     this.boats = this.initBoatArray();
     this.myBoard = this.initBoard();
     this.enemyBoard = this.initBoard();
@@ -52,67 +53,71 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (!this._us.getToken()) {
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl("/home");
       return;
     }
 
-    this.subscribers.push(this._us.getStatus(this._us.getId()).subscribe(
-      data => {
-        if ( !data.info.isInGame ) {
-          this.router.navigateByUrl('/home');
+    this.subscribers.push(
+      this._us.getStatus(this._us.getId()).subscribe((data) => {
+        if (!data.info.isInGame) {
+          this.router.navigateByUrl("/home");
           return;
         } else {
           this.init();
         }
-      }
-    ));
+      })
+    );
   }
 
   init() {
     // ricevi l'informazione dal gameList Component sul game e nickname
-    this.subscribers.push(this._gs.nickname.subscribe(n => this.nickname = n));
+    this.subscribers.push(
+      this._gs.nickname.subscribe((n) => (this.nickname = n))
+    );
 
     // ricevi eventi dell'arresa dell'altro giocatore
-    this.subscribers.push(this._ss.onSurrend()
-    .subscribe( () => {
-      this.arreso = true;
-      if (this.preparazione) {
-        document.getElementById('openArresoModal').click();
-      } else {
-        document.getElementById('openArresoModalGame').click();
-      }
-
-    }));
+    this.subscribers.push(
+      this._ss.onSurrend().subscribe(() => {
+        this.arreso = true;
+        if (this.preparazione) {
+          document.getElementById("openArresoModal").click();
+        } else {
+          document.getElementById("openArresoModalGame").click();
+        }
+      })
+    );
 
     // l'altro giocatore è pronto
-    this.subscribers.push(this._ss.onWaiting()
-    .subscribe( () => {
-      this.attesa = false;
-    }));
+    this.subscribers.push(
+      this._ss.onWaiting().subscribe(() => {
+        this.attesa = false;
+      })
+    );
 
     // arriva mossa avversaria
-    this.subscribers.push(this._ss.onMove()
-    .subscribe( (data) => {
-      this.turno = !this.turno;
-      const r = data.coordX;
-      const c = data.coordY;
+    this.subscribers.push(
+      this._ss.onMove().subscribe((data) => {
+        this.turno = !this.turno;
+        const r = data.coordX;
+        const c = data.coordY;
 
-      this.myBoard[r][c].colpita = true;
-      if ( data.affondata ) {
-        // la lunghezza è un valore univoco delle navi
-        // senza riceve nulla dal server posso sapere quale nave ho
-        // affondato contando quante celle affondo
-        this.affondaBarca(r, c, this.myBoard);
-      }
+        this.myBoard[r][c].colpita = true;
+        if (data.affondata) {
+          // la lunghezza è un valore univoco delle navi
+          // senza riceve nulla dal server posso sapere quale nave ho
+          // affondato contando quante celle affondo
+          this.affondaBarca(r, c, this.myBoard);
+        }
 
-      if ( data.vinto ) {
-        this.win(false);
-      }
-    }));
+        if (data.vinto) {
+          this.win(false);
+        }
+      })
+    );
   }
 
   backHome() {
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl("/");
   }
 
   // crea una matrice 10x10 di solo 'mare' e la ritorna
@@ -121,7 +126,14 @@ export class GameComponent implements OnInit, OnDestroy {
     for (let i = 0; i < 10; i++) {
       board[i] = [];
       for (let j = 0; j < 10; j++) {
-        board[i][j] = { valid: 0, type: 'sea', boat: null, index: null, affondata: false, colpita: false};
+        board[i][j] = {
+          valid: 0,
+          type: "sea",
+          boat: null,
+          index: null,
+          affondata: false,
+          colpita: false,
+        };
       }
     }
     return board;
@@ -131,32 +143,31 @@ export class GameComponent implements OnInit, OnDestroy {
   initBoatArray() {
     return [
       {
-         name: 'Cacciatorpediniere',
-         len: 2,
-         num: 4,
-         src: 'assets/boats/Cacciatorpediniere.png'
-       },
-       {
-         name: 'Sottomarino',
-         len: 3,
-         num: 2,
-         src: 'assets/boats/Sottomarino.png'
-       },
-       {
-         name: 'Corazzata',
-         len: 4,
-         num: 2,
-         src: 'assets/boats/Corazzata.png'
-       },
-       {
-         name: 'Portaerei',
-         len: 5,
-         num: 1,
-         src: 'assets/boats/Portaerei.png'
-       }
-     ];
+        name: "Cacciatorpediniere",
+        len: 2,
+        num: 4,
+        src: "assets/boats/Cacciatorpediniere.png",
+      },
+      {
+        name: "Sottomarino",
+        len: 3,
+        num: 2,
+        src: "assets/boats/Sottomarino.png",
+      },
+      {
+        name: "Corazzata",
+        len: 4,
+        num: 2,
+        src: "assets/boats/Corazzata.png",
+      },
+      {
+        name: "Portaerei",
+        len: 5,
+        num: 1,
+        src: "assets/boats/Portaerei.png",
+      },
+    ];
   }
-
 
   // controlla che tutte le barche siano state posizionate
   noBoatsLeft() {
@@ -184,14 +195,18 @@ export class GameComponent implements OnInit, OnDestroy {
 
         let valid;
 
-        if (orientamento === 'orizzontale') {
+        if (orientamento === "orizzontale") {
           // assumo che sia una barca valida
           valid = true;
           // Per ogni cella orizzontale (fino alla lunghezza della barca) controlla che:
           // - non vada fuori dal campo
           // - la cella sia valida e non ci sia una nave già
           for (let col = j; col < j + lung; col++) {
-            valid = (col < 10) && valid && (this.myBoard[i][col].valid === 0 && !this.myBoard[i][col].boat);
+            valid =
+              col < 10 &&
+              valid &&
+              this.myBoard[i][col].valid === 0 &&
+              !this.myBoard[i][col].boat;
           }
 
           // se è valida, aggiungila all'array di ritorno
@@ -202,7 +217,7 @@ export class GameComponent implements OnInit, OnDestroy {
               orientamento: orientamento,
               name: boat.name,
               boats_idx: index,
-              src: boat.src
+              src: boat.src,
             };
             arr.push(tempBoat);
           }
@@ -213,7 +228,11 @@ export class GameComponent implements OnInit, OnDestroy {
           valid = true;
 
           for (let row = i; row < i + lung; row++) {
-            valid = (row < 10) && valid && (this.myBoard[row][j].valid === 0 && !this.myBoard[row][j].boat);
+            valid =
+              row < 10 &&
+              valid &&
+              this.myBoard[row][j].valid === 0 &&
+              !this.myBoard[row][j].boat;
           }
 
           if (valid) {
@@ -223,7 +242,7 @@ export class GameComponent implements OnInit, OnDestroy {
               orientamento: orientamento,
               name: boat.name,
               boats_idx: index,
-              src: boat.src
+              src: boat.src,
             };
             arr.push(tempBoat);
           }
@@ -241,17 +260,17 @@ export class GameComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const titolo = document.getElementById('titolo-insert').innerHTML;
+    const titolo = document.getElementById("titolo-insert").innerHTML;
 
     // prende la i e j dal titolo del modale
-    const i = Number( titolo.split(':')[1].split(',')[0].trim() );
-    const j = Number( titolo.split(':')[1].split(',')[1].split(' ')[0].trim() );
+    const i = Number(titolo.split(":")[1].split(",")[0].trim());
+    const j = Number(titolo.split(":")[1].split(",")[1].split(" ")[0].trim());
 
     let fineX;
     let fineY;
 
     // calcola dove finirebbe, tenendo conto dell'orientamento
-    if (boat.orientamento === 'verticale') {
+    if (boat.orientamento === "verticale") {
       fineX = i + boat.len;
       fineY = j + 1;
     } else {
@@ -264,7 +283,7 @@ export class GameComponent implements OnInit, OnDestroy {
     let index = 0;
     for (let row = i; row < fineX; row++) {
       for (let col = j; col < fineY; col++) {
-        this.myBoard[row][col].type = 'boat';
+        this.myBoard[row][col].type = "boat";
         this.myBoard[row][col].boat = boat;
         this.myBoard[row][col].index = index;
 
@@ -290,7 +309,7 @@ export class GameComponent implements OnInit, OnDestroy {
     // della nave che voglio rimuovere, devo calcolare dove inizia.
     let initX, initY;
 
-    if (this.boatRemove.orientamento === 'verticale') {
+    if (this.boatRemove.orientamento === "verticale") {
       // torna indietro di 'index' posizioni fino a quella iniziale
       initX = i - this.myBoard[i][j].index;
       initY = j;
@@ -299,7 +318,7 @@ export class GameComponent implements OnInit, OnDestroy {
       // e rendi le celle di tipo 'mare', rendendo valide le adiacenti
       for (let row = initX; row < initX + this.boatRemove.len; row++) {
         for (let col = initY; col < initY + 1; col++) {
-          this.myBoard[row][col].type = 'sea';
+          this.myBoard[row][col].type = "sea";
           this.myBoard[row][col].boat = null;
 
           this.myBoard[row][col].index = null;
@@ -307,17 +326,15 @@ export class GameComponent implements OnInit, OnDestroy {
           this.adjCells(row, col, true);
         }
       }
-
     } else {
       // stessi controlli per l'orientamento 'orizzontale'
 
       initX = i;
       initY = j - this.myBoard[i][j].index;
 
-
       for (let row = initX; row < initX + 1; row++) {
         for (let col = initY; col < initY + this.boatRemove.len; col++) {
-          this.myBoard[row][col].type = 'sea';
+          this.myBoard[row][col].type = "sea";
           this.myBoard[row][col].boat = null;
 
           this.myBoard[row][col].index = null;
@@ -325,7 +342,6 @@ export class GameComponent implements OnInit, OnDestroy {
           this.adjCells(row, col, true);
         }
       }
-
     }
 
     // una volta rimossa dal campo quella nave,
@@ -335,25 +351,25 @@ export class GameComponent implements OnInit, OnDestroy {
 
   // metodo che rende valide o invalide le cella adiacenti ad una cella i,j
   adjCells(i, j, validare) {
-
     for (let r = -1; r < 2; r++) {
       for (let c = -1; c < 2; c++) {
         // controllo che sia nel campo!
         if (
-          ((i + r) < 10 && (j + c) < 10 ) &&
-          ((i + r) >= 0 && (j + c) >= 0 ) &&
-          this.myBoard[i + r][j + c]) {
-
-            if (validare) {
-              this.myBoard[i + r][j + c].valid--;
-            } else {
-              this.myBoard[i + r][j + c].valid++;
-            }
+          i + r < 10 &&
+          j + c < 10 &&
+          i + r >= 0 &&
+          j + c >= 0 &&
+          this.myBoard[i + r][j + c]
+        ) {
+          if (validare) {
+            this.myBoard[i + r][j + c].valid--;
+          } else {
+            this.myBoard[i + r][j + c].valid++;
+          }
         }
       }
     }
   }
-
 
   // metodo che viene chiamato quando clicco su una cella.
   // prepara i modali di inserimento e rimozione, settando il titolo
@@ -361,10 +377,10 @@ export class GameComponent implements OnInit, OnDestroy {
   loadModal(i, j, remove) {
     // se clicco su una cella che è una barca, 'remove' sarà true
     if (remove) {
-
       const boat = this.myBoard[i][j].boat;
-      const titolo = document.getElementById('titolo-remove');
-      titolo.innerHTML = '<b>' + boat.name + '  in posizione: ' + i + ',' + j + '</b>';
+      const titolo = document.getElementById("titolo-remove");
+      titolo.innerHTML =
+        "<b>" + boat.name + "  in posizione: " + i + "," + j + "</b>";
 
       // prepaaro la barca da rimuovere
       this.boatRemove = {
@@ -372,18 +388,18 @@ export class GameComponent implements OnInit, OnDestroy {
         j: j,
         orientamento: boat.orientamento,
         len: boat.len,
-        boats_idx: boat.boats_idx
+        boats_idx: boat.boats_idx,
       };
-
     } else {
       // altrimenti voglio inserire una barca nella cella i,j
-      const titolo = document.getElementById('titolo-insert');
-      titolo.innerHTML = '<b> Posiziona barca con inizio in: ' + i + ',' + j + ' </b>';
+      const titolo = document.getElementById("titolo-insert");
+      titolo.innerHTML =
+        "<b> Posiziona barca con inizio in: " + i + "," + j + " </b>";
 
       // preparo gli array di barche disponibili orizzontalmente
       // e verticalmente a partire dalla cella i,j
-      this.prepBoatsO =  this.loadShips(i, j, 'orizzontale');
-      this.prepBoatsV =  this.loadShips(i, j, 'verticale');
+      this.prepBoatsO = this.loadShips(i, j, "orizzontale");
+      this.prepBoatsV = this.loadShips(i, j, "verticale");
     }
   }
 
@@ -396,12 +412,15 @@ export class GameComponent implements OnInit, OnDestroy {
       for (let j = 0; j < 10; j++) {
         // lato server si vuole sapere solo le coordinate iniziali di ogni barca posizionata,
         // la sua lunghezza e l'orientamento
-        if (this.myBoard[i][j].type === 'boat' && this.myBoard[i][j].index === 0) {
+        if (
+          this.myBoard[i][j].type === "boat" &&
+          this.myBoard[i][j].index === 0
+        ) {
           const b = {
             row: i,
             col: j,
             length: this.myBoard[i][j].boat.len,
-            orientation: this.myBoard[i][j].boat.orientamento
+            orientation: this.myBoard[i][j].boat.orientamento,
           };
           boatsToSend.push(b);
         }
@@ -410,34 +429,37 @@ export class GameComponent implements OnInit, OnDestroy {
 
     // tramite il GameService manda una richiesta al server con l'array appena creato.
     // altri controlli per la validità del campo saranno svolti dal server.
-    this.subscribers.push(this._gs.startMatch(boatsToSend).subscribe(
-      (data1: any) => {
-        this.preparazione = false;
+    this.subscribers.push(
+      this._gs.startMatch(boatsToSend).subscribe(
+        (data1: any) => {
+          this.preparazione = false;
 
-        this.boats = this.initBoatArray();
-        this.turno = data1.turn;
-        this.daAffondare = 9;
-      },
-      err => {
-        this.toastr.errorToastr(err.error.message, 'Errore!');
-      }
-    ));
+          this.boats = this.initBoatArray();
+          this.turno = data1.turn;
+          this.daAffondare = 9;
+        },
+        (err) => {
+          this.toastr.error(err.error.message, "Errore!");
+        }
+      )
+    );
   }
 
   // funzione che manda una richiesta al GameService in segno d'arresa.
   // l'utente perde la partita.
   removeMatch() {
-    this.subscribers.push(this._gs.surrend().subscribe(
-      (data: any) => {
-        this.arreso = true;
-        this.backHome();
-      },
-      err => {
-        this.toastr.errorToastr(err.error.message, 'Errore!');
-      }
-    ));
+    this.subscribers.push(
+      this._gs.surrend().subscribe(
+        (data: any) => {
+          this.arreso = true;
+          this.backHome();
+        },
+        (err) => {
+          this.toastr.error(err.error.message, "Errore!");
+        }
+      )
+    );
   }
-
 
   shoot(r, c) {
     // ricevo
@@ -445,45 +467,47 @@ export class GameComponent implements OnInit, OnDestroy {
     // -colpita: 'Nave' | 'Mare'
     // -affondata: boolean
     // -vinto: boolean
-    if ( !this.turno ) { return; }
+    if (!this.turno) {
+      return;
+    }
     this.turno = !this.turno;
 
-    this.subscribers.push(this._gs.shoot(r, c).subscribe(
-      (data: any) => {
-        this.enemyBoard[r][c].colpita = true;
+    this.subscribers.push(
+      this._gs.shoot(r, c).subscribe(
+        (data: any) => {
+          this.enemyBoard[r][c].colpita = true;
 
-        if ( data.colpita === 'Mare') {
-          this.enemyBoard[r][c].type = 'sea';
-        } else if ( data.affondata ) {
-          // la lunghezza è un valore univoco delle navi
-          // senza riceve nulla dal server posso sapere quale nave ho
-          // affondato contando quante celle affondo
-          this.enemyBoard[r][c].type = 'boat';
+          if (data.colpita === "Mare") {
+            this.enemyBoard[r][c].type = "sea";
+          } else if (data.affondata) {
+            // la lunghezza è un valore univoco delle navi
+            // senza riceve nulla dal server posso sapere quale nave ho
+            // affondato contando quante celle affondo
+            this.enemyBoard[r][c].type = "boat";
 
-          const len = this.affondaBarca(r, c, this.enemyBoard);
+            const len = this.affondaBarca(r, c, this.enemyBoard);
 
-          // cerca la nave colpita in base alla lunghezza
-          for (const b of this.boats) {
-            if (b.len === len) {
-              b.num--;
-              this.daAffondare--;
+            // cerca la nave colpita in base alla lunghezza
+            for (const b of this.boats) {
+              if (b.len === len) {
+                b.num--;
+                this.daAffondare--;
+              }
             }
+          } else if (data.colpita === "Nave") {
+            this.enemyBoard[r][c].type = "boat";
           }
-        } else if ( data.colpita === 'Nave') {
-          this.enemyBoard[r][c].type = 'boat';
+
+          if (data.vinto) {
+            this.win(true);
+          }
+        },
+        (err) => {
+          this.toastr.info(err.error.message);
+          // ...
         }
-
-
-        if ( data.vinto ) {
-          this.win(true);
-        }
-
-      },
-      err => {
-        this.toastr.infoToastr(err.error.message);
-        // ...
-      }
-    ));
+      )
+    );
   }
 
   affondaBarca(r, c, board) {
@@ -494,30 +518,35 @@ export class GameComponent implements OnInit, OnDestroy {
     //    affondata = true
     //    return 1 + ricorsione (alto, basso, destra, sinistra)
     if (
-      r >= 10 || c >= 10 || r < 0 || c < 0 ||
-      board[r][c].type === 'sea' ||
-      board[r][c].affondata) {
-        return 0;
+      r >= 10 ||
+      c >= 10 ||
+      r < 0 ||
+      c < 0 ||
+      board[r][c].type === "sea" ||
+      board[r][c].affondata
+    ) {
+      return 0;
     } else {
       board[r][c].affondata = true;
-      return 1 +
-        this.affondaBarca( r - 1, c, board) +  // sxs
-        this.affondaBarca( r + 1, c, board) +  // dx
-        this.affondaBarca( r, c + 1, board) +  // up
-        this.affondaBarca( r, c - 1, board);   // down
+      return (
+        1 +
+        this.affondaBarca(r - 1, c, board) + // sxs
+        this.affondaBarca(r + 1, c, board) + // dx
+        this.affondaBarca(r, c + 1, board) + // up
+        this.affondaBarca(r, c - 1, board)
+      ); // down
     }
   }
 
-
   win(me: boolean) {
     if (me) {
-      document.getElementById('openWinModal').click();
+      document.getElementById("openWinModal").click();
     } else {
-      document.getElementById('openEnemyWinModal').click();
+      document.getElementById("openEnemyWinModal").click();
     }
   }
 
   ngOnDestroy(): void {
-    this.subscribers.forEach(e => e.unsubscribe());
+    this.subscribers.forEach((e) => e.unsubscribe());
   }
 }
