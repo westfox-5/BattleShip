@@ -31,6 +31,20 @@ services:
       - battleship-net
     ports:
       - 8081:80
+    traefik.enable: "true"
+      traefik.docker.network: "battleship-net"
+      traefik.http.services.battleship.loadbalancer.server.port: "80"
+      traefik.http.routers.battleship.rule: "Host(`battleship.davidevolpe.dev`)"
+      traefik.http.routers.battleship.entrypoints: "websecure"
+      traefik.http.routers.battleship.tls: "true"
+      traefik.http.routers.battleship.tls.certresolver: "production"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   battleship-net:
+    name: battleship-net
+
