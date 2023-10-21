@@ -29,7 +29,8 @@ services:
       dockerfile: Dockerfile
     networks:
       - battleship-net
-    traefik.enable: "true"
+    labels:
+      traefik.enable: "true"
       traefik.docker.network: "battleship-net"
       traefik.http.services.battleship.loadbalancer.server.port: "8081"
       traefik.http.routers.battleship.rule: "Host(`battleship.davidevolpe.dev`)"
