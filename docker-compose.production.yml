@@ -1,7 +1,7 @@
 ---
 services:
   server:
-    container_name: node
+    container_name: battleship-server
     restart: always
     pull_policy: build
     build:
@@ -19,7 +19,7 @@ services:
       DB_URL: "${DB_URL}"
 
   client:
-    container_name: angular
+    container_name: battleship-client
     restart: always
     pull_policy: build
     depends_on:
