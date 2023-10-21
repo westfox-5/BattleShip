@@ -1,0 +1,36 @@
+---
+services:
+  battleship-server:
+    container_name: node
+    restart: always
+    pull_policy: build
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - battleship-net
+    environment:
+      JWT_SECRET: "${JWT_SECRET}"
+      DEFAULT_ADMIN_USERNAME: "${DEFAULT_ADMIN_USERNAME}"
+      DEFAULT_ADMIN_PASSWORD: "${DEFAULT_ADMIN_PASSWORD}"
+      JWT_EXPIRE: "${JWT_EXPIRE}"
+      DB_URL: "${DB_URL}"
+
+  battleship-client:
+    container_name: angular
+    restart: always
+    pull_policy: build
+    depends_on:
+      - battleship-server
+    build:
+      context: ./client/angular
+      dockerfile: Dockerfile
+    networks:
+      - battleship-net
+    ports:
+      - 8081:80
+
+networks:
+  battleship-net:
