@@ -1,6 +1,6 @@
 ---
 services:
-  battleship-server:
+  server:
     container_name: node
     restart: always
     pull_policy: build
@@ -18,12 +18,12 @@ services:
       JWT_EXPIRE: "${JWT_EXPIRE}"
       DB_URL: "${DB_URL}"
 
-  battleship-client:
+  client:
     container_name: angular
     restart: always
     pull_policy: build
     depends_on:
-      - battleship-server
+      - server
     build:
       context: ./client/angular
       dockerfile: Dockerfile
