@@ -21,8 +21,8 @@ services:
       traefik.docker.network: "battleship-net"
       traefik.http.services.battleship-server.loadbalancer.server.port: "8080"
       traefik.http.routers.battleship-server.rule: "Host(`battleship.davidevolpe.dev`) && PathPrefix(`/api`)"
-      traefik.http.routers.battleship-server.middlewares: battleship-server-stripprefix
-      traefik.http.middlewares.battleship-server-stripprefix.stripprefix.prefixes: /api
+      #traefik.http.routers.battleship-server.middlewares: battleship-server-stripprefix
+      #traefik.http.middlewares.battleship-server-stripprefix.stripprefix.prefixes: /api
       traefik.http.routers.battleship-server.entrypoints: "websecure"
       traefik.http.routers.battleship-server.tls: "true"
       traefik.http.routers.battleship-server.tls.certresolver: "production"
