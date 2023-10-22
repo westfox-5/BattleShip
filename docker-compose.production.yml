@@ -2,11 +2,12 @@
 services:
   server:
     container_name: battleship-server
+    hostname: battleship-server
     restart: always
     pull_policy: build
     build:
       context: ./server
-      dockerfile: Dockerfile
+      dockerfile: production.Dockerfile
     ports:
       - 8080:8080
     networks:
@@ -26,7 +27,7 @@ services:
       - server
     build:
       context: ./client/angular
-      dockerfile: Dockerfile.production
+      dockerfile: production.Dockerfile
     networks:
       - battleship-net
     labels:
