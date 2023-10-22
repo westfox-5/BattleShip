@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  server_url: "http://172.25.0.3:8080",
+  server_url: "https://battleship.davidevolpe.dev/api",
   use_hash: { useHash: true },
 };

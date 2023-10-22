@@ -8,8 +8,6 @@ services:
     build:
       context: ./server
       dockerfile: production.Dockerfile
-    ports:
-      - 8080:8080
     networks:
       - battleship-net
     environment:
@@ -18,6 +16,14 @@ services:
       DEFAULT_ADMIN_PASSWORD: "${DEFAULT_ADMIN_PASSWORD}"
       JWT_EXPIRE: "${JWT_EXPIRE}"
       DB_URL: "${DB_URL}"
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "battleship-net"
+      traefik.http.services.battleship.loadbalancer.server.port: "8080"
+      traefik.http.routers.battleship.rule: "Host(`battleship.davidevolpe.dev`) && PathPrefix(`/api`)"
+      traefik.http.routers.battleship.entrypoints: "websecure"
+      traefik.http.routers.battleship.tls: "true"
+      traefik.http.routers.battleship.tls.certresolver: "production"
 
   client:
     container_name: battleship-client
