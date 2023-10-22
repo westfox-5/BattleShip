@@ -36,8 +36,6 @@ services:
       dockerfile: production.Dockerfile
     networks:
       - battleship-net
-    environment:
-      SERVER_URL: "${SERVER_URL}"
     labels:
       traefik.enable: "true"
       traefik.docker.network: "battleship-net"
