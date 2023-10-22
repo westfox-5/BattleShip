@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  server_url: "http://localhost:8080",
+  server_url: process.env.SERVER_URL,
   use_hash: { useHash: true },
 };
