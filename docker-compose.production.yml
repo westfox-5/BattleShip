@@ -26,7 +26,7 @@ services:
       - server
     build:
       context: ./client/angular
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.production
     networks:
       - battleship-net
     labels:
