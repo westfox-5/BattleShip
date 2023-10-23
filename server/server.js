@@ -40,9 +40,7 @@ const error_string = require("./error_string");
 utils.setSocket(socket);
 
 // Abilitare middleware utilizati da express
-app.use(cors({
-  origin: [process.env.FE_URL || 'http://localhost:4200']
-}));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
