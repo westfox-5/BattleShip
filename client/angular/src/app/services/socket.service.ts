@@ -14,8 +14,11 @@ export class SocketService {
     connected = false;
 
     public initSocket(tk) {
-
-        this.socket = io(environment.server_url);
+        if (environment.production) {
+            this.socket = io(environment.server_url, {path: '/api'});
+        } else {
+            this.socket = io(environment.server_url);
+        }
         this.connected = true;
         this.socket.emit('auth', tk );
     }
