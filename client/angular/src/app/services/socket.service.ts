@@ -15,7 +15,6 @@ export class SocketService {
 
     public initSocket(tk) {
         this.socket = io(environment.server_url);
-        console.log(this.socket);
         this.connected = true;
         this.socket.emit('auth', tk );
     }
