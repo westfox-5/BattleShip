@@ -1,13 +1,7 @@
-FROM node:latest
-
-# Set the working directory
-WORKDIR /usr/local/app
-
-# Add the source code to app
-COPY ./ /usr/local/app/
-
-# Install all the dependencies
+FROM node:18
+WORKDIR '/app'
+COPY package.json .
 RUN npm install
-
-# Generate the build of the application
-CMD [ "npm", "run", "start" ]
+COPY . .
+EXPOSE 4200
+CMD ["npm", "run", "start"]

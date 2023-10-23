@@ -14,11 +14,7 @@ export class SocketService {
     connected = false;
 
     public initSocket(tk) {
-        if (environment.production) {
-            this.socket = io(environment.server_url, {path: '/api/socket.io'});
-        } else {
-            this.socket = io(environment.server_url);
-        }
+        this.socket = io(environment.server_url);
         console.log(this.socket);
         this.connected = true;
         this.socket.emit('auth', tk );
