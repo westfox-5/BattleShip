@@ -15,7 +15,7 @@ export class SocketService {
 
     public initSocket(tk) {
         if (environment.production) {
-            this.socket = io(environment.server_url, {path: '/api/'});
+            this.socket = io(environment.server_url, {path: '/api/socket.io'});
         } else {
             this.socket = io(environment.server_url);
         }
