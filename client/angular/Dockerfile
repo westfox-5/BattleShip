@@ -1,19 +1,13 @@
-# Stage 1: Compile and Build angular codebase
-
-# Use official node image as the base image
-FROM node:18-bullseye-slim as build
+FROM node:latest
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /usr/local/app
 
-# Install app dependencies
-COPY package*.json ./
+# Add the source code to app
+COPY ./ /usr/local/app/
 
-# Clean install production deps
+# Install all the dependencies
 RUN npm install
-
-# Bundle app source
-COPY . .
 
 # Generate the build of the application
 CMD [ "npm", "run", "start" ]
