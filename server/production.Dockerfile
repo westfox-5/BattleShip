@@ -1,14 +1,21 @@
-FROM node:18
-# Create app directory
-WORKDIR /usr/src/app
+FROM node:21.0.0-bullseye-slim
+
+# Create app directory and assign to node user
+RUN mkdir /app && chown -R node:node /app
+WORKDIR /app
+
+# Switch to node user
+USER node
+
 # Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
 COPY package*.json ./
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --omit=dev
+
+# clean install production deps
+RUN npm ci --only=production && npm cache clean --force
+
 # Bundle app source
 COPY . .
+
 EXPOSE 8080
+
 CMD [ "npm", "run", "start" ]
