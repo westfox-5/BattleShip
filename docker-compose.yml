@@ -19,6 +19,7 @@ services:
       DEFAULT_ADMIN_PASSWORD: "${DEFAULT_ADMIN_PASSWORD}"
       JWT_EXPIRE: "${JWT_EXPIRE}"
       DB_URL: "${DB_URL}"
+      FE_URL: "${FE_URL}"
 
   battleship-db:
     image: mongo
@@ -49,6 +50,8 @@ services:
       - battleship-net
     ports:
       - 8081:80
+    environment:
+      BE_URL: "${BE_URL}"
 
 networks:
   battleship-net:
