@@ -1,8 +1,6 @@
 import {
   Component,
   OnInit,
-  Output,
-  EventEmitter,
   OnDestroy,
 } from "@angular/core";
 import { first } from "rxjs/operators";

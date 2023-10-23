@@ -1,7 +1,6 @@
 export const environment = {
 	production: true,
-	server_url: "https://battleship.davidevolpe.dev/api/",
-	ws_url: "/api/socket.io",
+	server_url: "http://battleship-server:8080",
 	use_hash: { useHash: true },
   };
   

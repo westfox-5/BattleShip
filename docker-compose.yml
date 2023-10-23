@@ -19,7 +19,6 @@ services:
       DEFAULT_ADMIN_PASSWORD: test123
       JWT_EXPIRE: 1h
       DB_URL: mongodb://battleship:battleship@mongo:27017/Battleship
-      FE_URL: localhost:4200
 
   battleship-db:
     image: mongo
@@ -46,12 +45,10 @@ services:
     build:
       context: ./client/angular
       dockerfile: Dockerfile
+    ports:
+      - 8081:80
     networks:
       - battleship-net
-    ports:
-      - 4200:4200
-    environment:
-      BE_URL: localhost:8080
 
 networks:
   battleship-net:
