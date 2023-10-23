@@ -1,4 +1,4 @@
-FROM node:21.0.0-bullseye-slim
+FROM node:18-bullseye-slim
 
 # Create app directory and assign to node user
 RUN mkdir /app && chown -R node:node /app
@@ -10,8 +10,8 @@ USER node
 # Install app dependencies
 COPY package*.json ./
 
-# clean install production deps
-RUN npm ci --only=production && npm cache clean --force
+# Clean install production deps
+RUN npm ci --omit=dev && npm cache clean --force
 
 # Bundle app source
 COPY . .
