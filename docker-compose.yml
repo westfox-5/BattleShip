@@ -3,9 +3,9 @@ services:
   battleship-server:
     container_name: node
     restart: always
-    pull_policy: build
     depends_on:
       - battleship-db
+    pull_policy: build
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -14,12 +14,12 @@ services:
     networks:
       - battleship-net
     environment:
-      JWT_SECRET: "${JWT_SECRET}"
-      DEFAULT_ADMIN_USERNAME: "${DEFAULT_ADMIN_USERNAME}"
-      DEFAULT_ADMIN_PASSWORD: "${DEFAULT_ADMIN_PASSWORD}"
-      JWT_EXPIRE: "${JWT_EXPIRE}"
-      DB_URL: "${DB_URL}"
-      FE_URL: "${FE_URL}"
+      JWT_SECRET: test
+      DEFAULT_ADMIN_USERNAME: test123
+      DEFAULT_ADMIN_PASSWORD: test123
+      JWT_EXPIRE: 1h
+      DB_URL: mongodb://battleship:battleship@mongo:27017/Battleship
+      FE_URL: localhost:4200
 
   battleship-db:
     image: mongo
@@ -30,9 +30,9 @@ services:
     networks:
       - battleship-net
     environment:
-      MONGO_INITDB_ROOT_USERNAME: "${DB_USERNAME}"
-      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD}"
-      MONGO_INITDB_DATABASE: "${DB_NAME}"
+      MONGO_INITDB_ROOT_USERNAME: battleship
+      MONGO_INITDB_ROOT_PASSWORD: battleship
+      MONGO_INITDB_DATABASE: Battleship
     volumes:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - ./server/data:/data/db
@@ -40,18 +40,18 @@ services:
   battleship-client:
     container_name: angular
     restart: always
-    pull_policy: build
     depends_on:
       - battleship-server
+    pull_policy: build
     build:
       context: ./client/angular
       dockerfile: Dockerfile
     networks:
       - battleship-net
     ports:
-      - 8081:80
+      - 4200:4200
     environment:
-      BE_URL: "${BE_URL}"
+      BE_URL: localhost:8080
 
 networks:
   battleship-net:
