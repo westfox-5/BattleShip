@@ -110,9 +110,9 @@ class auth_service {
           return next(utils.createError(401, error_string.USER_DELETE));
         }
 
-        const tokendata = req.user;
-        delete tokendata.iat;
-        delete tokendata.exp;
+        // const tokendata = req.user;
+        // delete tokendata.iat;
+        // delete tokendata.exp;
 
         const newToken = {
           id: user._id,

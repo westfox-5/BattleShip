@@ -29,8 +29,7 @@ export class UserService {
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + tk,
         'cache-control': 'no-cache',
-        'Content-Type':  'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Content-Type':  'application/json'
       })
     };
   }
