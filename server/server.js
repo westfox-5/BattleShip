@@ -5,7 +5,7 @@ colors.enabled = true;
 const express = require("express");
 const bodyParser = require("body-parser");
 const passport = require("passport"); // auth middleware per express
-const jwt = require("express-jwt"); // JWT parsing middleware per express
+const {expressjwt: jwt} = require("express-jwt"); // JWT parsing middleware per express
 const cors = require("cors");
 const mongoose = require("mongoose");
 
@@ -30,6 +30,7 @@ if (!process.env.JWT_SECRET) {
 // Middleware per JWT
 const auth = jwt({
   secret: process.env.JWT_SECRET,
+  algorithms: ["HS256"]
 });
 
 const socket = new (require("./services/socket"))(io);
